@@ -31,7 +31,6 @@ namespace Task_Manager_Api.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTimeOffset>("CreatedAt")
-                        .HasMaxLength(100)
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Description")
@@ -45,7 +44,8 @@ namespace Task_Manager_Api.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 

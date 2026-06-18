@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
-using Task_Manager_Api.Dtos;
+using TaskManager.Application.Features.Todo.Dtos;
 
-namespace Task_Manager_Api.Validation;
+namespace TaskManager.Application.Features.Todo.Validations;
 
-public class TodoRequestValidation : AbstractValidator<CreateTodoRequest>
+public class CreateTodoRequestvalidation : AbstractValidator<CreateTodoRequest>
 {
-    public TodoRequestValidation()
+    public CreateTodoRequestvalidation()
     {
         RuleFor(x => x.Title)
           .NotEmpty().WithMessage("The title cannot be empty")

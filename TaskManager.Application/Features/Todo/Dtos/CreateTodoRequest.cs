@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Task_Manager_Api.Dtos;
+namespace TaskManager.Application.Features.Todo.Dtos;
 
 public class CreateTodoRequest
 {

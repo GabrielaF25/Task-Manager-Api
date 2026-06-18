@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Task_Manager_Api.Dtos;
-using Task_Manager_Api.Services;
+using TaskManager.Application.Features.Todo.Dtos;
+using TaskManager.Application.Interfaces;
+using TaskManager.Application.Pagination;
+using TaskManager.Domain.Pagination;
 
 namespace Task_Manager_Api.Controllers;
 
@@ -16,15 +18,16 @@ public class TodoController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<TodoResponse>>> GetTodoItemsAsync()
+    public async Task<ActionResult<IEnumerable<TodoResponse>>>
+        GetTodoItemsAsync([FromQuery] QueryParamTodo queryParam, [FromQuery] PaginationParam pagination, CancellationToken ct)
     {
-        return Ok(await _todoService.GetAllAsync());
+        return Ok(await _todoService.GetAllAsync(queryParam, pagination, ct));
     }
 
     [HttpGet("{id}", Name = "GetById")]
-    public async Task<ActionResult<TodoResponse?>> GetItemAsync(int id)
+    public async Task<ActionResult<TodoResponse?>> GetItemAsync(int id, CancellationToken ct)
     {
-        var item = await _todoService.GetByIdAsync(id);
+        var item = await _todoService.GetByIdAsync(id, ct);
 
         if (item == null)
         {
@@ -36,16 +39,16 @@ public class TodoController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<TodoResponse>> AddItemAsync([FromBody] CreateTodoRequest item)
+    public async Task<ActionResult<TodoResponse>> AddItemAsync([FromBody] CreateTodoRequest item, CancellationToken ct)
     {
-        var response = await _todoService.AddItemAsync(item);
+        var response = await _todoService.AddItemAsync(item, ct);
         return CreatedAtRoute("GetById", new { id = response.Id}, response);
     }
 
     [HttpPatch("{id}/complete")]
-    public async Task<ActionResult<TodoResponse>> UpdateItemStatusAsync(int id)
+    public async Task<ActionResult<TodoResponse>> UpdateItemStatusAsync(int id, CancellationToken ct)
     {
-        var response = await _todoService.UpdateItemStatusAsync(id);
+        var response = await _todoService.UpdateItemStatusAsync(id, ct);
 
         if(response == null)
         {
@@ -55,9 +58,9 @@ public class TodoController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteItemAsync(int id)
+    public async Task<ActionResult> DeleteItemAsync(int id, CancellationToken ct)
     {
-        var response = await _todoService.DeleteItem(id);
+        var response = await _todoService.DeleteItemAsync(id, ct);
         if (!response)
         {
             return NotFound();
