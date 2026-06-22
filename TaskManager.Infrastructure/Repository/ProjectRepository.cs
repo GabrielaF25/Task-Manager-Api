@@ -42,6 +42,7 @@ public class ProjectRepository : IProjectRepository
     public async Task<Project?> GetProjectDetailsByIdAsync(int id, CancellationToken ct)
     {
         return await _dbContext.Projects
+            .AsNoTracking()
             .Include(t => t.TodoItems)
             .FirstOrDefaultAsync( p => p.Id == id, ct);
     }

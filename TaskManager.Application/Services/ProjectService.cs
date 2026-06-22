@@ -2,6 +2,7 @@
 using FluentValidation;
 using TaskManager.Application.Abstractions.Persistence;
 using TaskManager.Application.Common.Pagination;
+using TaskManager.Application.Common.ResultPattern;
 using TaskManager.Application.Features.Projects.Dto;
 using TaskManager.Application.Features.Projects.Queries;
 using TaskManager.Domain.Entities;
@@ -13,40 +14,52 @@ public class ProjectService : IProjectService
     private readonly IProjectRepository _projectRepository;
     private readonly IMapper _mapper;
     private readonly IValidator<CreateProjectRequest> _validatorCreate;
-    private readonly IValidator<PaginationParam> _validatorPagination;
+    private readonly IValidator<PaginationParam> _paginationValidator;
 
 
     public ProjectService(IProjectRepository projectRepository, IMapper mapper,
-        IValidator<CreateProjectRequest> validator, IValidator<PaginationParam> validatorPagination)
+        IValidator<CreateProjectRequest> validator, IValidator<PaginationParam> paginationValidator)
     {
         _projectRepository = projectRepository;
         _mapper = mapper;
         _validatorCreate = validator;
-        _validatorPagination = validatorPagination;
+        _paginationValidator = paginationValidator;
     }
 
-    public async Task<ProjectDto> CreateProjectAsync(CreateProjectRequest project, CancellationToken ct)
+    public async Task<Result<ProjectDto>> CreateProjectAsync(CreateProjectRequest project, CancellationToken ct)
     {
-        await _validatorCreate.ValidateAndThrowAsync(project, ct);
+        var validationResult = await _validatorCreate.ValidateAsync(project, ct);
+
+        if (!validationResult.IsValid)
+        {
+            var error = validationResult.Errors.Select(x => x.ErrorMessage).ToList();
+            return Result<ProjectDto>.Failed(error, StatusType.ValidationError);
+        }
+
         var projectDomain = _mapper.Map<Project>(project);
         var createdProject = await _projectRepository.AddAsync(projectDomain, ct);
 
         await _projectRepository.SaveChangesAsync(ct);
 
-        return _mapper.Map<ProjectDto>(createdProject);
+        return Result<ProjectDto>.Success(_mapper.Map<ProjectDto>(createdProject));
 
     }
 
-    public async Task<ProjectDto?> GetProjectDetailsByIdAsync(int id, CancellationToken ct)
+    public async Task<Result<ProjectDto>> GetProjectDetailsByIdAsync(int id, CancellationToken ct)
     {
         var projectDomain = await _projectRepository.GetProjectDetailsByIdAsync(id, ct);
+        if(projectDomain == null)
+        {
+            var error = new List<string> { "Project was not found." };
+            return Result<ProjectDto>.Failed(error, StatusType.NotFound);
+        }
 
-        return _mapper.Map<ProjectDto>(projectDomain);
+        return Result<ProjectDto>.Success(_mapper.Map<ProjectDto>(projectDomain));
     }
 
-    public async Task<PaginationResult<ProjectDto>> GetProjectsAsync(QueryParamProject queryParam, PaginationParam pagination,CancellationToken ct)
+    public async Task<Result<PaginationResult<ProjectDto>>> GetProjectsAsync(QueryParamProject queryParam, PaginationParam pagination,CancellationToken ct)
     {
-        await _validatorPagination.ValidateAndThrowAsync(pagination, ct);
+        await _paginationValidator.ValidateAndThrowAsync(pagination, ct);
 
         var projectPaginated = await _projectRepository.GetProjectsAsync(queryParam, pagination,ct);
 
@@ -62,21 +75,24 @@ public class ProjectService : IProjectService
         };
 
        
-        return paginatedProjectDto;
+        return Result<PaginationResult<ProjectDto>>.Success(paginatedProjectDto);
 
     }
 
-    public async Task<bool>  RemoveAsync(int id, CancellationToken ct)
+    public async Task<Result>RemoveAsync(int id, CancellationToken ct)
     {
         var project = await _projectRepository.GetProjectByIdAsync(id, ct);
 
-        if (project == null) return false;
+        if (project == null) 
+        {
+            var error = new List<string> { "The project was not found" };
+            return Result.Failed(error, StatusType.NotFound);
+        }
 
-       _projectRepository.Remove(project);
+        _projectRepository.Remove(project);
         await _projectRepository.SaveChangesAsync(ct);
 
-        return true;
+        return Result.Success();
 
     }
-
 }

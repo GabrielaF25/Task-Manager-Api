@@ -1,41 +1,39 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using TaskManager.Application.Abstractions.Persistence;
 using TaskManager.Application.Common.Pagination;
 using TaskManager.Application.Features.Projects.Dto;
 using TaskManager.Application.Features.Projects.Queries;
-using TaskManager.Domain.Entities;
 
 namespace Task_Manager_Api.Controllers;
 
-[Route("api/project")]
+[Route("api/projects")]
 [ApiController]
 public class ProjectController : ControllerBase
 {
     private readonly IProjectService _projectService;
 
-    public ProjectController(IProjectService project)
+    public ProjectController(IProjectService projectService)
     {
-        _projectService = project;
+        _projectService = projectService;
     }
 
     [HttpPost]
 
-    public async Task<ActionResult<Project>> CreateProject([FromBody] CreateProjectRequest CreateProject, CancellationToken ct)
+    public async Task<ActionResult<ProjectDto>> CreateProject([FromBody] CreateProjectRequest request, CancellationToken ct)
     {
-        var returnedProject = await _projectService.CreateProjectAsync(CreateProject, ct);
+        var returnedProject = await _projectService.CreateProjectAsync(request, ct);
 
-        return Ok(returnedProject);
+        return CreatedAtRoute("GetProjectById", new {id = returnedProject.Id}, returnedProject);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id}", Name = "GetProjectById")]
     public async Task<ActionResult<ProjectDto>> GetProjectByIdDetailedAsync(int id, CancellationToken ct)
     {
         var project = await _projectService.GetProjectDetailsByIdAsync(id, ct);
 
         if (project == null) 
         { 
-            NotFound();
+            return NotFound();
         }
 
         return Ok(project);
@@ -43,7 +41,7 @@ public class ProjectController : ControllerBase
 
     [HttpGet]
     public async Task<ActionResult<PaginationResult<ProjectDto>>> 
-        GetProjectsAsync([FromQuery] QueryParamProject queryParam,[FromQuery]PaginationParam pagination,CancellationToken ct)
+        GetProjectsAsync([FromQuery] QueryParamProject queryParam,[FromQuery] PaginationParam pagination,CancellationToken ct)
     {
         var projects = await _projectService.GetProjectsAsync( queryParam, pagination, ct);
 
@@ -51,13 +49,13 @@ public class ProjectController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult> RemoveAsync(int id, CancellationToken ct)
+    public async Task<ActionResult> DeleteAsync(int id, CancellationToken ct)
     {
         var status = await _projectService.RemoveAsync(id, ct);
 
         if (!status)
         {
-            return BadRequest();
+            return NotFound();
         }
 
         return NoContent();
