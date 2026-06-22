@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TaskManager.Application.Features.Todo.Dtos;
-using TaskManager.Application.Interfaces;
-using TaskManager.Application.Pagination;
-using TaskManager.Domain.Pagination;
+using TaskManager.Application.Abstractions.Persistence;
+using TaskManager.Application.Common.Pagination;
+using TaskManager.Application.Features.Todo.Queries;
+using TaskManager.Application.Features.Todos.Dtos;
 
 namespace Task_Manager_Api.Controllers;
 
@@ -18,10 +18,11 @@ public class TodoController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<TodoResponse>>>
+    public async Task<ActionResult<PaginationResult<TodoResponse>>>
         GetTodoItemsAsync([FromQuery] QueryParamTodo queryParam, [FromQuery] PaginationParam pagination, CancellationToken ct)
     {
-        return Ok(await _todoService.GetAllAsync(queryParam, pagination, ct));
+        var pagedData = await _todoService.GetAllAsync(queryParam, pagination, ct);
+        return Ok(pagedData);
     }
 
     [HttpGet("{id}", Name = "GetById")]

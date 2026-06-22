@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using TaskManager.Application.Features.Todo.Dtos;
+using TaskManager.Application.Features.Todos.Dtos;
 
-namespace TaskManager.Application.Features.Todo.Validations;
+namespace TaskManager.Domain.Features.Todo.Validations;
 
 public class CreateTodoRequestvalidation : AbstractValidator<CreateTodoRequest>
 {

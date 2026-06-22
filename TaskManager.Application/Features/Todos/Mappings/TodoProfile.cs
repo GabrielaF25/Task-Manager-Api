@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using Task_Manager_Api.Models;
-using TaskManager.Application.Features.Todo.Dtos;
-namespace TaskManager.Application.Features.Todo.Profiles;
+using TaskManager.Application.Features.Todos.Dtos;
+using TaskManager.Domain.Entities;
+namespace TaskManager.Application.Features.Todo.Mapper;
 
 public class TodoProfile :Profile
 {

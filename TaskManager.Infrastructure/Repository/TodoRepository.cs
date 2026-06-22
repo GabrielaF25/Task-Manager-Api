@@ -1,19 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Runtime.CompilerServices;
-using Task_Manager_Api.DbContexts;
-using Task_Manager_Api.Models;
-using TaskManager.Application.Abstraction;
-using TaskManager.Application.Pagination;
-using TaskManager.Domain.Pagination;
+﻿ using Microsoft.EntityFrameworkCore;
+using TaskManager.Application.Abstractions.Persistence;
+using TaskManager.Application.Common.Pagination;
+using TaskManager.Application.Features.Todo.Queries;
+using TaskManager.Domain.Entities;
+using TaskManager.Infrastructure.DbContexts;
 using TaskManager.Infrastructure.ExtensionMethods;
 
-namespace Task_Manager_Api.Repository;
+namespace TaskManager.Infrastructure.Repository;
 
 public class TodoRepository : ITodoRepository
 {
-    private readonly TaskManagerDb _context;
+    private readonly TaskManagerDbContext _context;
 
-    public TodoRepository(TaskManagerDb managerDb)
+    public TodoRepository(TaskManagerDbContext managerDb)
     {
         _context = managerDb;
     }
@@ -23,16 +22,24 @@ public class TodoRepository : ITodoRepository
         var itemTodo = await _context.TodoItems.FirstOrDefaultAsync(t => t.Id == id, ct);
         return itemTodo;
     }
-    public async Task<IEnumerable<TodoItem>>
+    public async Task<PaginationResult<TodoItem>>
         GetAllAsync(QueryParamTodo queryParam,PaginationParam pagination, CancellationToken ct)
     {
-        var itemTodo = await _context.TodoItems
-            .Filter(queryParam)
+        var itemsTodo =  _context.TodoItems
+            .ApplyTodoFilters(queryParam)
+            .ApplyTodoSorting(queryParam)
+            .AsNoTracking();
+
+
+        var totalCount = await itemsTodo.CountAsync(ct);
+
+         var items = await itemsTodo
             .ApplyPagination(pagination)
-            .AsNoTracking()
             .ToListAsync(ct);
 
-        return itemTodo;
+        var paginatedList = items.TransformToPageList(pagination, totalCount);
+
+        return paginatedList;
     }
 
     public async Task<TodoItem> AddAsync(TodoItem item, CancellationToken ct)

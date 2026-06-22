@@ -1,14 +1,15 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Task_Manager_Api.Repository;
-using TaskManager.Application.Abstraction;
+using TaskManager.Application.Abstractions.Persistence;
+using TaskManager.Infrastructure.Repository;
 
-namespace TaskManager.Infrastructure.DependencyInjections;
+namespace TaskManager.Infrastructure.DependencyInjection;
 
 public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
     {
         services.AddScoped<ITodoRepository, TodoRepository>();
+        services.AddScoped<IProjectRepository, ProjectRepository>();
 
         return services;
     }

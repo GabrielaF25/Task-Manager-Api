@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using Task_Manager_Api.DbContexts;
-using TaskManager.Application.DependencyInjections;
-using TaskManager.Infrastructure.DependencyInjections;
+using TaskManager.Domain.DependencyInjections;
+using TaskManager.Infrastructure.DbContexts;
+using TaskManager.Infrastructure.DependencyInjection;
 
 internal class Program
 {
@@ -12,7 +12,7 @@ internal class Program
         // Add services to the container.
 
 
-        builder.Services.AddDbContext<TaskManagerDb>(options =>
+        builder.Services.AddDbContext<TaskManagerDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
         );
 

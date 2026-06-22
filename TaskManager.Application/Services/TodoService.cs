@@ -1,33 +1,46 @@
 ﻿using AutoMapper;
 using FluentValidation;
-using Task_Manager_Api.Models;
-using TaskManager.Application.Abstraction;
-using TaskManager.Application.Features.Todo.Dtos;
-using TaskManager.Application.Interfaces;
-using TaskManager.Application.Pagination;
-using TaskManager.Domain.Pagination;
+using TaskManager.Application.Abstractions.Persistence;
+using TaskManager.Application.Common.Pagination;
+using TaskManager.Application.Features.Todo.Queries;
+using TaskManager.Application.Features.Todos.Dtos;
+using TaskManager.Domain.Entities;
 
-namespace Task_Manager_Api.Services;
+namespace TaskManager.Application.Services;
 
 public class TodoService : ITodoService
 {
     private readonly ITodoRepository _todoRepository;
     private readonly IMapper _mapper;
     private readonly IValidator<CreateTodoRequest> _validator;
+    private readonly IValidator<PaginationParam> _validatorResult;
 
-    public TodoService(ITodoRepository todoRepository, IMapper mapper, IValidator<CreateTodoRequest> validator)
+    public TodoService(ITodoRepository todoRepository, IMapper mapper, IValidator<CreateTodoRequest> validator, IValidator<PaginationParam> param)
     {
         _todoRepository = todoRepository;
         _mapper = mapper;
         _validator = validator;
+        _validatorResult = param;
     }
 
-    public async Task<IEnumerable<TodoResponse>> 
+    public async Task<PaginationResult<TodoResponse>> 
         GetAllAsync(QueryParamTodo queryParam,PaginationParam pagination,CancellationToken ct)
     {
-        var items = await _todoRepository.GetAllAsync(queryParam,pagination,ct);
+        await _validatorResult.ValidateAndThrowAsync(pagination, ct);
+        var itemsPageResult = await _todoRepository.GetAllAsync(queryParam,pagination,ct);
 
-        return _mapper.Map<IEnumerable<TodoResponse>>(items);
+        var pageResult = new PaginationResult<TodoResponse>()
+        {
+            PageNumber = itemsPageResult.PageNumber,
+            PageSize = itemsPageResult.PageSize,
+            TotalCount = itemsPageResult.TotalCount,
+            TotalPages = itemsPageResult.TotalPages,
+            HasNextPage = itemsPageResult.HasNextPage,
+            HasPreviousPage = itemsPageResult.HasPreviousPage,
+            Items = _mapper.Map<IEnumerable<TodoResponse>>(itemsPageResult.Items)
+        };
+
+        return pageResult;
     }
     public async Task<TodoResponse?> GetByIdAsync(int id, CancellationToken ct)
     {

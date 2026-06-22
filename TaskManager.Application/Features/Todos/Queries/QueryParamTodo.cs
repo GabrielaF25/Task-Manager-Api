@@ -1,4 +1,4 @@
-﻿namespace TaskManager.Domain.Pagination;
+﻿namespace TaskManager.Application.Features.Todo.Queries;
 
 public class QueryParamTodo
 {
