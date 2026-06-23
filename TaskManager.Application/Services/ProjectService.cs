@@ -59,7 +59,12 @@ public class ProjectService : IProjectService
 
     public async Task<Result<PaginationResult<ProjectDto>>> GetProjectsAsync(QueryParamProject queryParam, PaginationParam pagination,CancellationToken ct)
     {
-        await _paginationValidator.ValidateAndThrowAsync(pagination, ct);
+        var result = await _paginationValidator.ValidateAsync(pagination, ct);
+        if (!result.IsValid)
+        {
+            var errors = result.Errors.Select(e => e.ErrorMessage).ToList();
+            return Result<PaginationResult<ProjectDto>>.Failed(errors, StatusType.ValidationError);
+        }
 
         var projectPaginated = await _projectRepository.GetProjectsAsync(queryParam, pagination,ct);
 

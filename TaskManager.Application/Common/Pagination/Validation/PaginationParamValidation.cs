@@ -10,7 +10,7 @@ public class PaginationParamValidation : AbstractValidator<PaginationParam>
     {
         RuleFor(p => p.PageSize)
             .InclusiveBetween(1, 100)
-            .WithMessage("The PageSize cannot be less tha1 or greater than 100");
+            .WithMessage("The PageSize cannot be less than 1 or greater than 100");
 
         RuleFor(p => p.PageNumber)
             .GreaterThanOrEqualTo(1)

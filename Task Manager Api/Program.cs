@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Task_Manager_Api.Middlewares;
 using TaskManager.Domain.DependencyInjections;
 using TaskManager.Infrastructure.DbContexts;
 using TaskManager.Infrastructure.DependencyInjection;
@@ -20,8 +21,10 @@ internal class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
-        builder.Services.AddAppicationServices();
+        builder.Services.AddApplicationServices();
         builder.Services.AddInfrastructureServices();
+        builder.Services.AddExceptionHandler<GlobalExceptionMiddleware>();
+        builder.Services.AddProblemDetails();
 
 
         var app = builder.Build();
@@ -33,10 +36,13 @@ internal class Program
             app.UseSwaggerUI();
         }
 
+        app.UseExceptionHandler();
+
         app.UseHttpsRedirection();
 
         app.UseAuthorization();
 
+ 
         app.MapControllers();
 
         app.Run();

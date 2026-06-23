@@ -12,7 +12,7 @@ namespace TaskManager.Domain.DependencyInjections;
 
 public static class ServiceCollection
 {
-    public static IServiceCollection AddAppicationServices(this IServiceCollection services)
+    public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
         services.AddScoped<ITodoService, TodoService>();
         services.AddScoped<IProjectService, ProjectService>();

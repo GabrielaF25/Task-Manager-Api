@@ -8,7 +8,7 @@ namespace Task_Manager_Api.Controllers;
 
 [Route("api/todos")]
 [ApiController]
-public class TodoController : ControllerBase
+public class TodoController : BaseController
 {
     private readonly ITodoService _todoService;
 
@@ -22,20 +22,15 @@ public class TodoController : ControllerBase
         GetTodoItemsAsync([FromQuery] QueryParamTodo queryParam, [FromQuery] PaginationParam pagination, CancellationToken ct)
     {
         var pagedData = await _todoService.GetAllAsync(queryParam, pagination, ct);
-        return Ok(pagedData);
+        return HandleResult(pagedData);
     }
 
     [HttpGet("{id}", Name = "GetById")]
-    public async Task<ActionResult<TodoResponse?>> GetItemAsync(int id, CancellationToken ct)
+    public async Task<ActionResult<TodoResponse>> GetItemAsync(int id, CancellationToken ct)
     {
         var item = await _todoService.GetByIdAsync(id, ct);
 
-        if (item == null)
-        {
-            return NotFound();
-        }
-
-        return Ok(item);
+       return  HandleResult(item);
 
     }
 
@@ -43,7 +38,7 @@ public class TodoController : ControllerBase
     public async Task<ActionResult<TodoResponse>> AddItemAsync([FromBody] CreateTodoRequest item, CancellationToken ct)
     {
         var response = await _todoService.AddItemAsync(item, ct);
-        return CreatedAtRoute("GetById", new { id = response.Id}, response);
+        return HandleCreatedResult("GetById", response, dto => new {id = dto.Id});
     }
 
     [HttpPatch("{id}/complete")]
@@ -51,21 +46,13 @@ public class TodoController : ControllerBase
     {
         var response = await _todoService.UpdateItemStatusAsync(id, ct);
 
-        if(response == null)
-        {
-            return NotFound();
-        }
-        return Ok(response);
+        return HandleResult(response);
     }
 
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteItemAsync(int id, CancellationToken ct)
     {
         var response = await _todoService.DeleteItemAsync(id, ct);
-        if (!response)
-        {
-            return NotFound();
-        }
-        return NoContent();
+        return HandleResult(response);
     }
 }

@@ -8,7 +8,7 @@ namespace Task_Manager_Api.Controllers;
 
 [Route("api/projects")]
 [ApiController]
-public class ProjectController : ControllerBase
+public class ProjectController : BaseController
 {
     private readonly IProjectService _projectService;
 
@@ -21,9 +21,9 @@ public class ProjectController : ControllerBase
 
     public async Task<ActionResult<ProjectDto>> CreateProject([FromBody] CreateProjectRequest request, CancellationToken ct)
     {
-        var returnedProject = await _projectService.CreateProjectAsync(request, ct);
+        var returnedProjectResult = await _projectService.CreateProjectAsync(request, ct);
 
-        return CreatedAtRoute("GetProjectById", new {id = returnedProject.Id}, returnedProject);
+        return HandleCreatedResult("GetProjectById", returnedProjectResult, dto => new {id = dto.Id });
     }
 
     [HttpGet("{id}", Name = "GetProjectById")]
@@ -31,12 +31,7 @@ public class ProjectController : ControllerBase
     {
         var project = await _projectService.GetProjectDetailsByIdAsync(id, ct);
 
-        if (project == null) 
-        { 
-            return NotFound();
-        }
-
-        return Ok(project);
+        return  HandleResult(project);
     }
 
     [HttpGet]
@@ -45,19 +40,14 @@ public class ProjectController : ControllerBase
     {
         var projects = await _projectService.GetProjectsAsync( queryParam, pagination, ct);
 
-        return Ok(projects);
+        return HandleResult(projects);
     }
 
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteAsync(int id, CancellationToken ct)
     {
-        var status = await _projectService.RemoveAsync(id, ct);
+        var result = await _projectService.RemoveAsync(id, ct);
 
-        if (!status)
-        {
-            return NotFound();
-        }
-
-        return NoContent();
+        return HandleResult(result);
     }
 }
