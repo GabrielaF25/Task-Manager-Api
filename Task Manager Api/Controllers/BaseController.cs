@@ -12,29 +12,19 @@ public abstract class BaseController : ControllerBase
             return Ok(result.Data);
         }
 
-        return result.StatusType switch
-        {
-            StatusType.NotFound => NotFound(result.Errors),
-            StatusType.ValidationError => BadRequest(result.Errors),
-            StatusType.Conflict => Conflict(result.Errors),
-            _ => BadRequest(result.Errors)
-        };
+
+        return CreateProblemDetails(result);
     }
 
     protected ActionResult<T> HandleCreatedResult<T>(string route,Result<T> result, Func<T, object> routeValues)
     {
         if (result.IsSuccess)
         {
-            return CreatedAtRoute(route, new { routeValues },result.Data);
+            return CreatedAtRoute(route, routeValues(result.Data!), result.Data);
+
         }
 
-        return result.StatusType switch
-        {
-            StatusType.NotFound => NotFound(result.Errors),
-            StatusType.ValidationError => BadRequest(result.Errors),
-            StatusType.Conflict => Conflict(result.Errors),
-            _ => BadRequest(result.Errors)
-        };
+        return CreateProblemDetails(result);
     }
 
     protected ActionResult HandleResult(Result result)
@@ -44,12 +34,37 @@ public abstract class BaseController : ControllerBase
             return NoContent();
         }
 
-        return result.StatusType switch
+        return CreateProblemDetails(result);
+
+    }
+
+    private ActionResult CreateProblemDetails(Result result)
+    {
+        var statusCode = result.StatusType switch
         {
-            StatusType.NotFound => NotFound(result.Errors),
-            StatusType.ValidationError => BadRequest(result.Errors),
-            StatusType.Conflict => Conflict(result.Errors),
-            _ => BadRequest(result.Errors)
+            StatusType.NotFound => StatusCodes.Status404NotFound,
+            StatusType.ValidationError => StatusCodes.Status400BadRequest,
+            StatusType.Conflict => StatusCodes.Status409Conflict,
+            _ => StatusCodes.Status400BadRequest
         };
+
+        var title = result.StatusType switch
+        {
+            StatusType.NotFound => "Resource not found",
+            StatusType.ValidationError => "Validation failed",
+            StatusType.Conflict => "Conflict",
+            _ => "An error occurred"
+        };
+
+        var problemDetails = new ProblemDetails()
+        {
+            Title = title,
+            Detail = result.Errors.FirstOrDefault(),
+            Instance = HttpContext.Request.Path,
+            Status = statusCode
+        };
+
+        problemDetails.Extensions["errors"] = result.Errors;
+        return StatusCode(statusCode, problemDetails);
     }
 }

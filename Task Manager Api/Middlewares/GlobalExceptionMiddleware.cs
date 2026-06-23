@@ -18,7 +18,7 @@ public class GlobalExceptionMiddleware: IExceptionHandler
 
         var problemDetails = new ProblemDetails
         {
-            Detail = exception.Message,
+            Detail = "An error ouccured",
             Title = exception.GetType().Name,
             Instance = httpContext.Request.Path
         };
