@@ -2,7 +2,7 @@
 using TaskManager.Application.Abstractions.Persistence;
 using TaskManager.Application.Common.Pagination;
 using TaskManager.Application.Features.Projects.Dto;
-using TaskManager.Application.Features.Projects.Queries;
+using TaskManager.Application.Features.Projects.Queries.GetProjects;
 
 namespace Task_Manager_Api.Controllers;
 

@@ -12,7 +12,6 @@ public abstract class BaseController : ControllerBase
             return Ok(result.Data);
         }
 
-
         return CreateProblemDetails(result);
     }
 
@@ -65,6 +64,7 @@ public abstract class BaseController : ControllerBase
         };
 
         problemDetails.Extensions["errors"] = result.Errors;
+
         return StatusCode(statusCode, problemDetails);
     }
 }

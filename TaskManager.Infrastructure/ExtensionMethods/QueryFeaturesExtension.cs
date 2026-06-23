@@ -1,4 +1,4 @@
-﻿using TaskManager.Application.Features.Projects.Queries;
+﻿using TaskManager.Application.Features.Projects.Queries.GetProjects;
 using TaskManager.Application.Features.Todo.Queries;
 using TaskManager.Domain.Entities;
 

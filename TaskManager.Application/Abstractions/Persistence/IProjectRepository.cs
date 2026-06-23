@@ -1,5 +1,5 @@
 ﻿using TaskManager.Application.Common.Pagination;
-using TaskManager.Application.Features.Projects.Queries;
+using TaskManager.Application.Features.Projects.Queries.GetProjects;
 using TaskManager.Domain.Entities;
 
 namespace TaskManager.Application.Abstractions.Persistence;

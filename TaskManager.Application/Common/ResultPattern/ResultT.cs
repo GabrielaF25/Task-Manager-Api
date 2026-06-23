@@ -10,4 +10,10 @@ public class Result<T> : Result
         IsSuccess = true,
         StatusType = StatusType.Success
     };
+
+    public static new Result<T> Failed(List<string> errors, StatusType statusType) => new()
+    {
+        Errors = errors,
+        StatusType = statusType
+    };
 }
