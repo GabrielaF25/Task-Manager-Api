@@ -10,5 +10,5 @@ public class PaginationResult<T>
     public bool HasPreviousPage { get; set; }
 
 
-    public IEnumerable<T> Items { get; set; } = Enumerable.Empty<T>();
+    public IEnumerable<T> Items { get; set; } = [];
 }

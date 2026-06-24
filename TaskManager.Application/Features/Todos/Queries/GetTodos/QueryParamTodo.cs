@@ -1,4 +1,4 @@
-﻿namespace TaskManager.Application.Features.Todo.Queries;
+﻿namespace TaskManager.Application.Features.Todos.Queries.GetTodos;
 
 public class QueryParamTodo
 {

@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <None Include="Features\Projects\Queries\GetProjectDetails\GetProjectDetailsQueryHandler.cs" />
+    <None Include="Features\Todos\Queries\GetTodo\GetTodoQuery.cs" />
   </ItemGroup>
 
   <ItemGroup>

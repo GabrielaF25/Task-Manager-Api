@@ -1,5 +1,5 @@
 ﻿using TaskManager.Application.Features.Projects.Queries.GetProjects;
-using TaskManager.Application.Features.Todo.Queries;
+using TaskManager.Application.Features.Todos.Queries.GetTodos;
 using TaskManager.Domain.Entities;
 
 namespace TaskManager.Infrastructure.ExtensionMethods;
