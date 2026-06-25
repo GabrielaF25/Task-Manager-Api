@@ -12,12 +12,13 @@ public class TaskManagerDbContext : DbContext
 
     public DbSet<TodoItem> TodoItems { get; set; }
     public DbSet<Project> Projects { get; set; }
+    public DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<TodoItem>()
             .ToTable("Todos");
-            
+
         modelBuilder.Entity<TodoItem>()
             .Property(t => t.IsCompleted)
             .HasDefaultValue(false);
@@ -36,7 +37,7 @@ public class TaskManagerDbContext : DbContext
             .HasMaxLength(500);
 
         modelBuilder.Entity<TodoItem>()
-            .HasOne(t => t.Project)  
+            .HasOne(t => t.Project)
             .WithMany(p => p.TodoItems)
             .HasForeignKey(t => t.ProjectId)
             .OnDelete(DeleteBehavior.Cascade);
@@ -52,6 +53,31 @@ public class TaskManagerDbContext : DbContext
         modelBuilder.Entity<Project>()
             .Property(p => p.Description)
             .HasMaxLength(500);
+
+        modelBuilder.Entity<User>()
+            .ToTable("Users");
+
+        modelBuilder.Entity<User>()
+            .Property(u => u.UserName)
+            .IsRequired()
+            .HasMaxLength(100);
+
+        modelBuilder.Entity<User>()
+            .Property(u => u.Email)
+            .IsRequired();
+
+        modelBuilder.Entity<User>()
+            .Property(u => u.PasswordHash)
+            .IsRequired()
+            .HasMaxLength(500);
+
+        modelBuilder.Entity<User>()
+            .HasIndex(u => u.Email)
+            .IsUnique();
+
+        modelBuilder.Entity<User>()
+             .HasIndex(u => u.UserName)
+             .IsUnique();
 
 
     }

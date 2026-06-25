@@ -1,11 +1,11 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TaskManager.Application.Common.Pagination;
-using TaskManager.Application.Features.Projects.Commands.CreateProject;
-using TaskManager.Application.Features.Projects.Commands.DeleteProject;
+using TaskManager.Application.Features.Projects.CreateProject;
+using TaskManager.Application.Features.Projects.DeleteProject;
 using TaskManager.Application.Features.Projects.Dto;
-using TaskManager.Application.Features.Projects.Queries.GetProjectDetails;
-using TaskManager.Application.Features.Projects.Queries.GetProjects;
+using TaskManager.Application.Features.Projects.GetProjectDetails;
+using TaskManager.Application.Features.Projects.GetProjects;
 
 namespace Task_Manager_Api.Controllers;
 

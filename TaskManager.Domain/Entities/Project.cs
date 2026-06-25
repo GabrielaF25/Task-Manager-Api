@@ -2,9 +2,15 @@
 
 public class Project
 {
-    public int Id { get; set; }
-    public string Name { get; set; } = null!;
-    public string? Description { get; set; } 
+    private Project() { }
+    public Project(string name, string? description)
+    {
+        Name = name;
+        Description = description;
+    }
+    public int Id { get; private set; }
+    public string Name { get; private set; } = null!;
+    public string? Description { get; private set; } 
 
-    public ICollection<TodoItem> TodoItems { get; set; } = new List<TodoItem>();
+    public ICollection<TodoItem> TodoItems { get; private set; } = new List<TodoItem>();
 }

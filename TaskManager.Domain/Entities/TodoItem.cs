@@ -1,16 +1,29 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace TaskManager.Domain.Entities;
+﻿namespace TaskManager.Domain.Entities;
 
 public class TodoItem
 {
-    public int Id { get; set; }
-    public string Title { get; set; } = null!;
-    public string? Description { get; set; }
-    public bool IsCompleted {  get; set; }
+    private TodoItem() { }
+    public static TodoItem Create(string title, string? description, int projectId)
+    {
+        return new TodoItem
+        {
+            Title = title,
+            Description = description,
+            ProjectId = projectId,
+            CreatedAt = DateTimeOffset.UtcNow,
+            IsCompleted = false
+        };
+    }
+    public int Id { get; private set; }
+    public string Title { get; private set; } = null!;
+    public string? Description { get; private set; }
+    public bool IsCompleted {  get; private set; }
+    public int ProjectId {  get; private set; }
+    public Project Project { get; private set; } = null!;
+    public DateTimeOffset CreatedAt { get; private set; }
 
-    public int ProjectId {  get; set; }
-    public Project Project { get; set; } = null!;
-
-    public DateTimeOffset CreatedAt { get; set; }
+    public void Complete( )
+    {
+        IsCompleted = true;
+    }
 }

@@ -1,12 +1,12 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TaskManager.Application.Common.Pagination;
-using TaskManager.Application.Features.Todos.Commands.CreateTodo;
-using TaskManager.Application.Features.Todos.Commands.DeleteTodo;
-using TaskManager.Application.Features.Todos.Commands.UpdateTodo;
+using TaskManager.Application.Features.Todos.CreateTodo;
+using TaskManager.Application.Features.Todos.DeleteTodo;
 using TaskManager.Application.Features.Todos.Dtos;
+using TaskManager.Application.Features.Todos.GetTodos;
 using TaskManager.Application.Features.Todos.Queries.GetTodo;
-using TaskManager.Application.Features.Todos.Queries.GetTodos;
+using TaskManager.Application.Features.Todos.UpdateTodo;
 
 namespace Task_Manager_Api.Controllers;
 

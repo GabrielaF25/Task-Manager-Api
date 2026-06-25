@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TaskManager.Application.Abstractions.Persistence;
 using TaskManager.Application.Common.Pagination;
-using TaskManager.Application.Features.Projects.Queries.GetProjects;
+using TaskManager.Application.Features.Projects.GetProjects;
 using TaskManager.Domain.Entities;
 using TaskManager.Infrastructure.DbContexts;
 using TaskManager.Infrastructure.ExtensionMethods;

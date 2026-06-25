@@ -10,4 +10,7 @@ public class CreateTodoRequest
 
     [MaxLength(500)]
     public string? Description { get; set; }
+
+    [Required]
+    public  int ProjectId { get; set; }
 }
