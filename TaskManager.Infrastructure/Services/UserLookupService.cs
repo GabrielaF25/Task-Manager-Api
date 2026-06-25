@@ -17,4 +17,8 @@ public class UserLookupService : IUserLookupService
     {
         return await _dbContext.Users.AnyAsync(u => u.Email == email, cancellationToken);
     }
+    public async Task<bool> UserNameExistsAsync(string userName, CancellationToken cancellationToken)
+    {
+        return await _dbContext.Users.AnyAsync(u => u.UserName == userName, cancellationToken);
+    }
 }

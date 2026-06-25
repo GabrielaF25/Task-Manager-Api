@@ -4,5 +4,5 @@ using TaskManager.Application.Features.Users.Dtos;
 
 namespace TaskManager.Application.Features.Users.CreateUser;
 
-public record CreateUserCommand(CreateUserRequest  UserToCreate) : IRequest<Result>;
+public record CreateUserCommand(CreateUserRequest  UserToCreate) : IRequest<Result<UserResponse>>;
 

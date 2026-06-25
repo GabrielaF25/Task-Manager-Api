@@ -4,9 +4,9 @@ using TaskManager.Domain.Entities;
 
 namespace TaskManager.Application.Features.Users.Mappings;
 
-public class Mapping :Profile
+public class UserProfile : Profile
 {
-    public Mapping()
+    public UserProfile()
     {
         CreateMap<User, UserResponse>();
     }

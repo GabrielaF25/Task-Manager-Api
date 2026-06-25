@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using TaskManager.Application.Abstractions.Persistence;
 using TaskManager.Application.Abstractions.Services;
 using TaskManager.Application.Features.Users.Dtos;
 
@@ -12,27 +11,36 @@ public class CreateUserValidation : AbstractValidator<CreateUserRequest>
         RuleFor(u => u.UserName)
             .NotEmpty()
             .WithMessage("Username is required.")
-            .MaximumLength(50);
+            .MaximumLength(50)
+            .MustAsync(async (userName, ct)
+            => !await userLookupService.UserNameExistsAsync(userName.Trim().ToLowerInvariant(), ct))
+             .WithMessage("UserName is already registered");
 
         RuleFor(u => u.Password)
+            .Cascade(CascadeMode.Stop)
+            .NotEmpty()
+            .WithMessage("Password is required.")
             .MinimumLength(8)
+            .WithMessage("Password must be at least 8 characters.")
             .MaximumLength(100)
-            .Matches("[A-Z]")
+            .WithMessage("Password cannot be greater than 100 characters.")
+            .Matches(@"[A-Z]")
             .WithMessage("Password must contain at least one uppercase letter.")
-            .Matches("[a-z]")
+            .Matches(@"[a-z]")
             .WithMessage("Password must contain at least one lowercase letter.")
-            .Matches("[0-9]")
+            .Matches(@"\d")
             .WithMessage("Password must contain at least one digit.");
 
         RuleFor(u => u.Email)
-          .NotEmpty()
-          .WithMessage("Email is required.")
-          .EmailAddress()
-          .WithMessage("The format of email is wrong")
-          .MaximumLength(255)
+            .Cascade(CascadeMode.Stop)
+            .NotEmpty()
+            .WithMessage("Email is required.")
+            .EmailAddress()
+            .WithMessage("The format of email is wrong")
+            .MaximumLength(255)
             .MustAsync(async (email, ct) =>
-         !await userLookupService.EmailExistsAsync(email.Trim().ToLowerInvariant(), ct))
-         .WithMessage("Email is already registered");
-       
+                !await userLookupService.EmailExistsAsync(email.Trim().ToLowerInvariant(), ct))
+            .WithMessage("Email is already registered");
+
     }
 }
