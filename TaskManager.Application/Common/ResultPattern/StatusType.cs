@@ -4,5 +4,7 @@ public enum StatusType
     Success,
     NotFound,
     ValidationError,
-    Conflict
+    Conflict,
+    Unauthorized
+       
 }

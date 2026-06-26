@@ -1,6 +1,6 @@
 ﻿using TaskManager.Domain.Entities;
 
-namespace TaskManager.Application.Abstractions.Authentication;
+namespace TaskManager.Application.Abstractions.Authetication;
 
 public interface IPasswordHasherService
 {

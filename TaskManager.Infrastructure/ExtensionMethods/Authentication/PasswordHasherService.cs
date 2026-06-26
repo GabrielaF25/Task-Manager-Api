@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using TaskManager.Application.Abstractions.Authentication;
+using TaskManager.Application.Abstractions.Authetication;
 using TaskManager.Domain.Entities;
 
 namespace TaskManager.Infrastructure.Authentication;

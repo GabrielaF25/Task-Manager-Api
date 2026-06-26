@@ -44,6 +44,7 @@ public abstract class BaseController : ControllerBase
             StatusType.NotFound => StatusCodes.Status404NotFound,
             StatusType.ValidationError => StatusCodes.Status400BadRequest,
             StatusType.Conflict => StatusCodes.Status409Conflict,
+            StatusType.Unauthorized => StatusCodes.Status401Unauthorized,
             _ => StatusCodes.Status400BadRequest
         };
 
@@ -52,6 +53,7 @@ public abstract class BaseController : ControllerBase
             StatusType.NotFound => "Resource not found",
             StatusType.ValidationError => "Validation failed",
             StatusType.Conflict => "Conflict",
+            StatusType.Unauthorized => "Unauthorized",
             _ => "An error occurred"
         };
 

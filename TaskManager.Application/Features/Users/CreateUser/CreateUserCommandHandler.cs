@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using MediatR;
-using TaskManager.Application.Abstractions.Authentication;
+using TaskManager.Application.Abstractions.Authetication;
 using TaskManager.Application.Abstractions.Persistence;
 using TaskManager.Application.Common.ResultPattern;
 using TaskManager.Application.Features.Users.Dtos;
@@ -29,16 +29,16 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Resul
     {
         var normalizedEmail = userToCreate.UserToCreate.Email.Trim().ToLowerInvariant();
 
-       var createUser = new CreateUserRequest() { UserName = userToCreate.UserToCreate.UserName, Email = normalizedEmail };
+       var normalizedUser = new CreateUserRequest() { UserName = userToCreate.UserToCreate.UserName, Email = normalizedEmail, Password = userToCreate.UserToCreate.Password };
 
-        var resultValidator = await _userValidator.ValidateAsync(createUser, cancellationToken);
+        var resultValidator = await _userValidator.ValidateAsync(normalizedUser, cancellationToken);
         if (!resultValidator.IsValid)
         {
             var errors = resultValidator.Errors.Select(x => x.ErrorMessage).ToList();
             return Result<UserResponse>.Failed(errors, StatusType.ValidationError);
         }
 
-        var user = User.Register(createUser.Email, createUser.UserName);
+        var user = User.Register(normalizedUser.Email, normalizedUser.UserName);
 
         var hash = _passwordHasherService.HashPassword(user, userToCreate.UserToCreate.Password);
 

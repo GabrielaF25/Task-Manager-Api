@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using TaskManager.Application.Abstractions.Authentication;
+using TaskManager.Application.Abstractions.Authetication;
 using TaskManager.Application.Abstractions.Persistence;
 using TaskManager.Application.Abstractions.Services;
 using TaskManager.Domain.Entities;
@@ -20,6 +20,7 @@ public static class DependencyInjection
         services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
         services.AddScoped<IUserLookupService, UserLookupService>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 
         return services;
     }

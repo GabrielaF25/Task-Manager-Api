@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Task_Manager_Api.Middlewares;
 using TaskManager.Domain.DependencyInjections;
+using TaskManager.Infrastructure.Authentication;
 using TaskManager.Infrastructure.DbContexts;
 using TaskManager.Infrastructure.DependencyInjection;
 
@@ -25,6 +26,10 @@ internal class Program
         builder.Services.AddInfrastructureServices();
         builder.Services.AddExceptionHandler<GlobalExceptionMiddleware>();
         builder.Services.AddProblemDetails();
+        builder.Services.AddOptions<JwtSettings>()
+                                .BindConfiguration(JwtSettings.SectionName)
+                                .ValidateDataAnnotations()
+                                .ValidateOnStart();
 
 
         var app = builder.Build();

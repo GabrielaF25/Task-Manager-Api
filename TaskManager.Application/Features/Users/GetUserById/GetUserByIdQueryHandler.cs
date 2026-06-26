@@ -6,19 +6,19 @@ using TaskManager.Application.Features.Users.Dtos;
 
 namespace TaskManager.Application.Features.Users.GetUser;
 
-public class GetUserQueryHandler : IRequestHandler<GetUserQuery, Result<UserResponse>>
+public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, Result<UserResponse>>
 {
 
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
 
-    public GetUserQueryHandler(IUserRepository userRepository, IMapper mapper)
+    public GetUserByIdQueryHandler(IUserRepository userRepository, IMapper mapper)
     {
         _userRepository = userRepository;
         _mapper = mapper;
     }
 
-    public async Task<Result<UserResponse>> Handle(GetUserQuery request, CancellationToken cancellationToken)
+    public async Task<Result<UserResponse>> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetUserByIdAsync(request.Id, cancellationToken);
 
