@@ -13,15 +13,15 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Resul
 {
     private readonly IUserRepository _userRepository;
     private readonly IPasswordHasherService _passwordHasherService;
-    private readonly IValidator<CreateUserRequest> _userValidator;
     private readonly IMapper _mapper;
 
-    public CreateUserCommandHandler(IUserRepository userRepository, IPasswordHasherService passwordHasherService,
-        IValidator<CreateUserRequest> validator, IMapper mapper)
+    public CreateUserCommandHandler(
+        IUserRepository userRepository,
+        IPasswordHasherService passwordHasherService,
+        IMapper mapper)
     {
         _userRepository = userRepository;
         _passwordHasherService = passwordHasherService;
-        _userValidator = validator;
         _mapper = mapper;
     }
 
@@ -31,21 +31,14 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Resul
 
        var normalizedUser = new CreateUserRequest() { UserName = userToCreate.UserToCreate.UserName, Email = normalizedEmail, Password = userToCreate.UserToCreate.Password };
 
-        var resultValidator = await _userValidator.ValidateAsync(normalizedUser, cancellationToken);
-        if (!resultValidator.IsValid)
-        {
-            var errors = resultValidator.Errors.Select(x => x.ErrorMessage).ToList();
-            return Result<UserResponse>.Failed(errors, StatusType.ValidationError);
-        }
-
         var user = User.Register(normalizedUser.Email, normalizedUser.UserName);
 
         var hash = _passwordHasherService.HashPassword(user, userToCreate.UserToCreate.Password);
 
         user.SetPasswordHash(hash);
 
-       var userCreated = await _userRepository.CreateUserAsync(user, cancellationToken);
-        await _userRepository.SaveChangesAsync(cancellationToken);
+        var userCreated = await _userRepository.CreateUserAsync(user, cancellationToken);
+
         var mappedUsers = _mapper.Map<UserResponse>(userCreated);
         return Result<UserResponse>.Success(mappedUsers);
     }

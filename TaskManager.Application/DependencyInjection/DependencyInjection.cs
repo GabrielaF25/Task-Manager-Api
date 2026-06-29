@@ -18,10 +18,10 @@ public static class ServiceCollection
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
 
-        services.AddValidatorsFromAssemblyContaining<CreateProjectValidation>();
-        services.AddValidatorsFromAssemblyContaining<CreateTodoRequestvalidation>();
+        services.AddValidatorsFromAssemblyContaining<CreateProjectCommand>();
+        services.AddValidatorsFromAssemblyContaining<CreateTodoCommand>();
         services.AddValidatorsFromAssemblyContaining<PaginationParamValidation>();
-        services.AddValidatorsFromAssemblyContaining<CreateUserValidation>();
+        services.AddValidatorsFromAssemblyContaining<CreateUserCommand>();
 
         services.AddAutoMapper(cfg => cfg.AddProfile<TodoProfile>());
         services.AddAutoMapper(cfg => cfg.AddProfile<ProjectProfile>());

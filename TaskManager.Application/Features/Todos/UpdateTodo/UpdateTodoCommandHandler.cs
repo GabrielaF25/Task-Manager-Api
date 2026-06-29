@@ -29,7 +29,7 @@ public class UpdateTodoCommandHandler : IRequestHandler<UpdateTodoCommand, Resul
         }
 
         item.Complete();
-        await _todoRepository.SaveChangesAsync(ct);
+
         return Result<TodoResponse>.Success(_mapper.Map<TodoResponse>(item));
     }
 }

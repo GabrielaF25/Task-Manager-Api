@@ -4,7 +4,7 @@ using TaskManager.Application.Common.ResultPattern;
 
 namespace TaskManager.Application.Behaviors;
 
-public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest where TResponse : Result
+public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull where TResponse : Result
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators;
 

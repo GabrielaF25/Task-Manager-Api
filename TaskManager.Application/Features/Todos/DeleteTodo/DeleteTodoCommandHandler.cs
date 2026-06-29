@@ -25,7 +25,6 @@ public class DeleteTodoCommandHandler : IRequestHandler<DeleteTodoCommand, Resul
         }
 
         _todoRepository.Remove(item);
-        await _todoRepository.SaveChangesAsync(ct);
 
         return Result.Success();
     }

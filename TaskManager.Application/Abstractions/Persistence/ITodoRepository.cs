@@ -10,5 +10,4 @@ public interface ITodoRepository
     void Remove(TodoItem item);
     Task<PaginationResult<TodoItem>> GetAllAsync(QueryParamTodo queryParam,PaginationParam pagination,CancellationToken ct);
     Task<TodoItem?> GetByIdAsync(int id, CancellationToken ct);
-    Task SaveChangesAsync(CancellationToken ct);
 }

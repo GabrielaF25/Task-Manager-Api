@@ -4,11 +4,11 @@ using TaskManager.Application.Features.Users.Dtos;
 
 namespace TaskManager.Application.Features.Users.CreateUser;
 
-public class CreateUserValidation : AbstractValidator<CreateUserRequest>
+public class CreateUserValidation : AbstractValidator<CreateUserCommand>
 {
     public CreateUserValidation(IUserLookupService userLookupService)
     {
-        RuleFor(u => u.UserName)
+        RuleFor(u => u.UserToCreate.UserName)
             .NotEmpty()
             .WithMessage("Username is required.")
             .MaximumLength(50)
@@ -16,7 +16,7 @@ public class CreateUserValidation : AbstractValidator<CreateUserRequest>
             => !await userLookupService.UserNameExistsAsync(userName.Trim().ToLowerInvariant(), ct))
              .WithMessage("UserName is already registered");
 
-        RuleFor(u => u.Password)
+        RuleFor(u => u.UserToCreate.Password)
             .Cascade(CascadeMode.Stop)
             .NotEmpty()
             .WithMessage("Password is required.")
@@ -31,7 +31,7 @@ public class CreateUserValidation : AbstractValidator<CreateUserRequest>
             .Matches(@"\d")
             .WithMessage("Password must contain at least one digit.");
 
-        RuleFor(u => u.Email)
+        RuleFor(u => u.UserToCreate.Email)
             .Cascade(CascadeMode.Stop)
             .NotEmpty()
             .WithMessage("Email is required.")

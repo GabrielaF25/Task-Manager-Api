@@ -29,9 +29,4 @@ public class UserRepository : IUserRepository
     {
         return await _context.Users.FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
     }
-
-    public async Task SaveChangesAsync(CancellationToken cancellationToken)
-    {
-        await _context.SaveChangesAsync(cancellationToken);
-    }
 }

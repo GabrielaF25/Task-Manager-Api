@@ -16,7 +16,6 @@ public class TodoRepository : ITodoRepository
     {
         _context = managerDb;
     }
-
     public async Task<TodoItem?> GetByIdAsync(int id, CancellationToken ct)
     {
         var itemTodo = await _context.TodoItems.FirstOrDefaultAsync(t => t.Id == id, ct);
@@ -48,15 +47,9 @@ public class TodoRepository : ITodoRepository
         return item;
     }
 
-    public async Task SaveChangesAsync(CancellationToken ct)
-    {
-        await _context.SaveChangesAsync(ct);
-    }
-
     public void Remove(TodoItem item)
     {
         _context.TodoItems.Remove(item);
 
     }
-
 }

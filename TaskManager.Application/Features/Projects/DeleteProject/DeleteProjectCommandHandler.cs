@@ -36,7 +36,6 @@ public class DeleteProjectCommandHandler : IRequestHandler<DeleteProjectCommand,
         }
 
         _projectRepository.Remove(project);
-        await _projectRepository.SaveChangesAsync(ct);
 
         return Result.Success();
 
