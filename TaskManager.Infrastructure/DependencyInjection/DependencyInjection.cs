@@ -5,6 +5,7 @@ using TaskManager.Application.Abstractions.Persistence;
 using TaskManager.Application.Abstractions.Services;
 using TaskManager.Domain.Entities;
 using TaskManager.Infrastructure.Authentication;
+using TaskManager.Infrastructure.Persistence;
 using TaskManager.Infrastructure.Repository;
 using TaskManager.Infrastructure.Services;
 
@@ -21,6 +22,7 @@ public static class DependencyInjection
         services.AddScoped<IUserLookupService, UserLookupService>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+        services.AddScoped<IUnitOfWork, EFUnitOfWork>();
 
         return services;
     }
