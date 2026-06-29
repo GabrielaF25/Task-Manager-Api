@@ -1,6 +1,8 @@
 ﻿using FluentValidation;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using TaskManager.Application.Behaviors;
 using TaskManager.Application.Features.Projects.CreateProject;
 using TaskManager.Application.Features.Projects.Mappings;
 using TaskManager.Application.Features.Todo.Mapper;
@@ -24,6 +26,9 @@ public static class ServiceCollection
         services.AddAutoMapper(cfg => cfg.AddProfile<TodoProfile>());
         services.AddAutoMapper(cfg => cfg.AddProfile<ProjectProfile>());
         services.AddAutoMapper(cfg => cfg.AddProfile<UserProfile>());
+
+        //behaviors
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
 
