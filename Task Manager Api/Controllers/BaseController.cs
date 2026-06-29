@@ -45,6 +45,7 @@ public abstract class BaseController : ControllerBase
             StatusType.ValidationError => StatusCodes.Status400BadRequest,
             StatusType.Conflict => StatusCodes.Status409Conflict,
             StatusType.Unauthorized => StatusCodes.Status401Unauthorized,
+            StatusType.Forbidden => StatusCodes.Status403Forbidden,
             _ => StatusCodes.Status400BadRequest
         };
 
@@ -54,6 +55,7 @@ public abstract class BaseController : ControllerBase
             StatusType.ValidationError => "Validation failed",
             StatusType.Conflict => "Conflict",
             StatusType.Unauthorized => "Unauthorized",
+            StatusType.Forbidden => "Forbidden",
             _ => "An error occurred"
         };
 

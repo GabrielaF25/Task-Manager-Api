@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskManager.Application.Common.Pagination;
 using TaskManager.Application.Features.Projects.CreateProject;
@@ -11,6 +12,7 @@ namespace Task_Manager_Api.Controllers;
 
 [Route("api/projects")]
 [ApiController]
+[Authorize]
 public class ProjectController : BaseController
 {
     private readonly IMediator _mediator;
@@ -22,7 +24,7 @@ public class ProjectController : BaseController
     [HttpPost]
     public async Task<ActionResult<ProjectDto>> CreateProject([FromBody] CreateProjectRequest request, CancellationToken ct)
     {
-        var returnedProjectResult = await _mediator.Send(new CreateProjectCommand(request), ct);
+        var returnedProjectResult = await _mediator.Send(new CreateProjectCommand(request ) , ct);
 
         return HandleCreatedResult("GetProjectById", returnedProjectResult, dto => new {id = dto.Id });
     }
@@ -47,7 +49,7 @@ public class ProjectController : BaseController
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteAsync(int id, CancellationToken ct)
     {
-        var result = await _mediator.Send(new  DeleteProjectCommand(id), ct);
+        var result = await _mediator.Send(new DeleteProjectCommand(id), ct);
 
         return HandleResult(result);
     }

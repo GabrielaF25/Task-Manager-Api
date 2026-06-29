@@ -23,9 +23,10 @@ public class ProjectRepository : IProjectRepository
         return project;
     }
 
-    public async Task<PaginationResult<Project>> GetProjectsAsync(QueryParamProject queryParam,PaginationParam pagination,CancellationToken ct)
+    public async Task<PaginationResult<Project>> GetProjectsAsync(QueryParamProject queryParam, int id,PaginationParam pagination,CancellationToken ct)
     {
         var query =  _dbContext.Projects
+            .Where(p => p.OwnerId == id)
             .ApplyProjectFilters(queryParam)
             .ApplyProjectSorting(queryParam)
             .AsNoTracking();

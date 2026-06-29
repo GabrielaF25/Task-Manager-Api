@@ -79,6 +79,5 @@ public class TaskManagerDbContext : DbContext
              .HasIndex(u => u.UserName)
              .IsUnique();
 
-
     }
 }

@@ -5,6 +5,7 @@ public enum StatusType
     NotFound,
     ValidationError,
     Conflict,
-    Unauthorized
+    Unauthorized,
+    Forbidden
        
 }

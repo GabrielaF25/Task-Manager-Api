@@ -14,7 +14,10 @@ public class CreateTodoCommandHandler : IRequestHandler<CreateTodoCommand,Result
     private readonly IMapper _mapper;
     private readonly IValidator<CreateTodoRequest> _validator;
 
-    public CreateTodoCommandHandler(ITodoRepository todoRepository, IMapper mapper, IValidator<CreateTodoRequest> validator)
+    public CreateTodoCommandHandler(
+        ITodoRepository todoRepository,
+        IMapper mapper,
+        IValidator<CreateTodoRequest> validator)
     {
         _todoRepository = todoRepository;
         _mapper = mapper;
