@@ -2,7 +2,7 @@
 using TaskManager.Application.Abstractions.Authetication;
 using TaskManager.Domain.Entities;
 
-namespace TaskManager.Infrastructure.Authentication;
+namespace TaskManager.Infrastructure.Services.Authentication;
 
 public class PasswordHasherService : IPasswordHasherService
 {

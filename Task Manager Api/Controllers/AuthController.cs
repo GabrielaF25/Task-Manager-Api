@@ -1,10 +1,15 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TaskManager.Application.Common.ResultPattern;
+using TaskManager.Application.Features.Authentication.Dtos;
+using TaskManager.Application.Features.Authentication.Login.LoginUser;
+using TaskManager.Application.Features.Authentication.LoginUser;
+using TaskManager.Application.Features.Authentication.RefreshTokens.CreateRefreshToken;
+using TaskManager.Application.Features.RefreshTokens.CreateRefreshToken;
 using TaskManager.Application.Features.Users.CreateUser;
 using TaskManager.Application.Features.Users.Dtos;
 using TaskManager.Application.Features.Users.GetUser;
-using TaskManager.Application.Features.Users.LoginUser;
+using TaskManager.Domain.Entities;
 
 namespace Task_Manager_Api.Controllers;
 
@@ -40,6 +45,25 @@ public class AuthController : BaseController
     public async Task<ActionResult<LoginResponse>> LoginUser([FromBody]UserCredentials userCredentials, CancellationToken  cancellationToken)
     {
         var result = await _mediator.Send(new LoginUserCommand(userCredentials), cancellationToken);
+
+        return HandleResult(result);
+    }
+
+
+    [HttpPost("refresh")]
+
+    public async Task<ActionResult<RefreshTokenResponse>> GetRefreshToken([FromBody] RefreshTokenRequest request, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new RefreshTokenCommand(request), cancellationToken);
+
+        return HandleResult(result);
+    }
+
+    [HttpPost("logout")]
+
+    public async Task<ActionResult> RevokeRefreshToken([FromBody] RefreshTokenRequest token, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new RevokeRefreshToken(token), cancellationToken);
 
         return HandleResult(result);
     }

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskManager.Application.Abstractions.Services;
 using TaskManager.Application.Common.Pagination;
@@ -13,6 +14,7 @@ namespace Task_Manager_Api.Controllers;
 
 [Route("api/todos")]
 [ApiController]
+[Authorize]
 public class TodoController : BaseController
 {
     private readonly IMediator _mediator;

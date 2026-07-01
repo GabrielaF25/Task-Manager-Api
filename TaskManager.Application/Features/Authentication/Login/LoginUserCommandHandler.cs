@@ -2,9 +2,11 @@
 using TaskManager.Application.Abstractions.Authetication;
 using TaskManager.Application.Abstractions.Persistence;
 using TaskManager.Application.Common.ResultPattern;
+using TaskManager.Application.Features.Authentication.Dtos;
+using TaskManager.Domain.Entities;
 using TaskManager.Infrastructure.Authentication;
 
-namespace TaskManager.Application.Features.Users.LoginUser;
+namespace TaskManager.Application.Features.Authentication.Login;
 
 public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Result<LoginResponse>>
 {
@@ -34,11 +36,19 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Result<
         if (!result)
         {
             var error = new List<string> { "Invalid credentials." };
-            Result<string>.Failed(error, StatusType.Unauthorized);
+            return Result<LoginResponse>.Failed(error, StatusType.Unauthorized);
         }
-        var token = _jwtTokenGenerator.GenerateJwt(user);
+        var accessToken = _jwtTokenGenerator.GenerateJwt(user);
 
-        var loginResponse = new LoginResponse() { UserName = user.UserName, Token = token };
-        return Result<LoginResponse>.Success(loginResponse);
+        var refreshToken = RefreshToken.Create(_jwtTokenGenerator.GenerateRefreshToken(),  _jwtTokenGenerator.GerRefreshTokenExperation());
+
+        user.AddRefreshToken(refreshToken);
+
+        return Result<LoginResponse>.Success(new LoginResponse
+        {
+            UserName = user.UserName,
+            AccessToken = accessToken,
+            RefreshToken = refreshToken.Token
+        });
     }
 }

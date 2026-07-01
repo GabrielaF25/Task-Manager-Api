@@ -3,9 +3,9 @@ using TaskManager.Application.Features.Todos.Dtos;
 
 namespace TaskManager.Application.Features.Todos.CreateTodo;
 
-public class CreateTodoRequestvalidation : AbstractValidator<CreateTodoCommand>
+public class CreateTodoCommandValidation : AbstractValidator<CreateTodoCommand>
 {
-    public CreateTodoRequestvalidation()
+    public CreateTodoCommandValidation()
     {
         RuleFor(x => x.TodoRequest.Title)
           .NotEmpty().WithMessage("The title cannot be empty")

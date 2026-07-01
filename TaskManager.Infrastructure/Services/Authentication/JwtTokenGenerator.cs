@@ -2,10 +2,12 @@
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using TaskManager.Domain.Entities;
+using TaskManager.Infrastructure.Authentication;
 
-namespace TaskManager.Infrastructure.Authentication;
+namespace TaskManager.Infrastructure.Services.Authentication;
 
 public class JwtTokenGenerator : IJwtTokenGenerator
 {
@@ -31,11 +33,23 @@ public class JwtTokenGenerator : IJwtTokenGenerator
             issuer: _jwtSettings.Issuer,
             audience: _jwtSettings.Audience,
             claims: claims,
-            expires: DateTime.UtcNow.AddHours(2),
+            expires: DateTime.UtcNow.AddMinutes(_jwtSettings.ExpirationInMinute),
             signingCredentials: creds
         );
 
         return new JwtSecurityTokenHandler().WriteToken(jwt);
+    }
+
+    public string GenerateRefreshToken()
+    {
+        var randomBytes = RandomNumberGenerator.GetBytes(64);
+
+        return Convert.ToBase64String(randomBytes);
+    }
+
+    public DateTimeOffset GerRefreshTokenExperation()
+    {
+        return DateTimeOffset.UtcNow.AddMinutes(_jwtSettings.RefreshTokenExpiryMinutes);
     }
 }
 

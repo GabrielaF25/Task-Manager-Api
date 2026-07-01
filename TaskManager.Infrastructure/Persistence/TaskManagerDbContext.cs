@@ -13,6 +13,7 @@ public class TaskManagerDbContext : DbContext
     public DbSet<TodoItem> TodoItems { get; set; }
     public DbSet<Project> Projects { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -79,5 +80,37 @@ public class TaskManagerDbContext : DbContext
              .HasIndex(u => u.UserName)
              .IsUnique();
 
+        modelBuilder.Entity<RefreshToken>()
+        .ToTable("RefreshTokens");
+
+        modelBuilder.Entity<RefreshToken>()
+            .HasKey(x => x.Id);
+
+        modelBuilder.Entity<RefreshToken>()
+            .Property(x => x.Token)
+            .IsRequired()
+            .HasMaxLength(500);
+
+        modelBuilder.Entity<RefreshToken>()
+            .Property(x => x.ExpiresAt)
+            .IsRequired();
+
+        modelBuilder.Entity<RefreshToken>()
+            .Property(x => x.CreatedAt)
+            .IsRequired();
+
+        modelBuilder.Entity<RefreshToken>()
+            .Property(x => x.RevokedAt)
+            .IsRequired(false);
+
+        modelBuilder.Entity<RefreshToken>()
+            .HasOne(x => x.User)
+            .WithMany(x => x.RefreshTokens)
+            .HasForeignKey(x => x.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<RefreshToken>()
+            .HasIndex(x => x.Token)
+            .IsUnique();
     }
 }

@@ -3,9 +3,9 @@ using TaskManager.Application.Features.Projects.Dto;
 
 namespace TaskManager.Application.Features.Projects.CreateProject;
 
-public class CreateProjectValidation : AbstractValidator<CreateProjectCommand>
+public class CreateProjectCommandValidation : AbstractValidator<CreateProjectCommand>
 {
-    public CreateProjectValidation()
+    public CreateProjectCommandValidation()
     {
         RuleFor(x => x.Project.Name)
           .NotEmpty().WithMessage("The Name cannot be empty")

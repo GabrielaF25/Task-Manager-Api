@@ -8,6 +8,7 @@ using TaskManager.Infrastructure.Authentication;
 using TaskManager.Infrastructure.Persistence;
 using TaskManager.Infrastructure.Repository;
 using TaskManager.Infrastructure.Services;
+using TaskManager.Infrastructure.Services.Authentication;
 
 namespace TaskManager.Infrastructure.DependencyInjection;
 
@@ -17,6 +18,7 @@ public static class DependencyInjection
     {
         services.AddScoped<ITodoRepository, TodoRepository>();
         services.AddScoped<IProjectRepository, ProjectRepository>();
+        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
         services.AddScoped<IPasswordHasherService, PasswordHasherService>();
         services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
         services.AddScoped<IUserLookupService, UserLookupService>();

@@ -7,9 +7,9 @@ using Task_Manager_Api.Middlewares;
 using Task_Manager_Api.Service;
 using TaskManager.Application.Abstractions.Services;
 using TaskManager.Domain.DependencyInjections;
-using TaskManager.Infrastructure.Authentication;
 using TaskManager.Infrastructure.DbContexts;
 using TaskManager.Infrastructure.DependencyInjection;
+using TaskManager.Infrastructure.Services.Authentication;
 
 internal class Program
 {

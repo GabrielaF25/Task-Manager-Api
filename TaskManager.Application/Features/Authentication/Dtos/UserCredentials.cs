@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TaskManager.Application.Features.Users.LoginUser;
+namespace TaskManager.Application.Features.Authentication.Dtos;
 
 public class UserCredentials
 {

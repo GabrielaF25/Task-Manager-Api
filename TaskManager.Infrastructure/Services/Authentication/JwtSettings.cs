@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskManager.Infrastructure.Authentication;
+namespace TaskManager.Infrastructure.Services.Authentication;
 
 public class JwtSettings
 {
@@ -14,4 +14,5 @@ public class JwtSettings
     public string Issuer {  get; init; } = string.Empty;
     public string Audience {  get; init; } = string.Empty;
     public int ExpirationInMinute {  get; init; }
+    public int RefreshTokenExpiryMinutes { get; init; }
 }
