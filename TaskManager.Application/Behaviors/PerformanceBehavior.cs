@@ -5,11 +5,11 @@ using TaskManager.Application.Common.ResultPattern;
 
 namespace TaskManager.Application.Behaviors;
 
-public class Performancebehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull where TResponse : Result
+public class PerformanceBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull where TResponse : Result
 {
-    private readonly ILogger<Performancebehavior<TRequest, TResponse>>  _logger;
+    private readonly ILogger<PerformanceBehavior<TRequest, TResponse>>  _logger;
 
-    public Performancebehavior(ILogger<Performancebehavior<TRequest, TResponse>> logger)
+    public PerformanceBehavior(ILogger<PerformanceBehavior<TRequest, TResponse>> logger)
     {
         _logger = logger;
     }

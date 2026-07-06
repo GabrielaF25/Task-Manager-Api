@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using FluentValidation;
 using MediatR;
 using TaskManager.Application.Abstractions.Persistence;
 using TaskManager.Application.Common.ResultPattern;

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
+using TaskManager.Application.Abstractions.Persistence;
 
 namespace TaskManager.Infrastructure.Persistence;
 

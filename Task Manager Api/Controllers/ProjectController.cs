@@ -12,7 +12,7 @@ namespace Task_Manager_Api.Controllers;
 
 [Route("api/projects")]
 [ApiController]
-[Authorize]
+[Authorize(Roles = "User")]
 public class ProjectController : BaseController
 {
     private readonly IMediator _mediator;
@@ -24,7 +24,7 @@ public class ProjectController : BaseController
     [HttpPost]
     public async Task<ActionResult<ProjectDto>> CreateProject([FromBody] CreateProjectRequest request, CancellationToken ct)
     {
-        var returnedProjectResult = await _mediator.Send(new CreateProjectCommand(request ) , ct);
+        var returnedProjectResult = await _mediator.Send(new LogoutUserCommandValidation(request ) , ct);
 
         return HandleCreatedResult("GetProjectById", returnedProjectResult, dto => new {id = dto.Id });
     }

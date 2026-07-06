@@ -4,7 +4,6 @@ using TaskManager.Application.Abstractions.Authetication;
 using TaskManager.Application.Abstractions.Persistence;
 using TaskManager.Application.Abstractions.Services;
 using TaskManager.Domain.Entities;
-using TaskManager.Infrastructure.Authentication;
 using TaskManager.Infrastructure.Persistence;
 using TaskManager.Infrastructure.Repository;
 using TaskManager.Infrastructure.Services;

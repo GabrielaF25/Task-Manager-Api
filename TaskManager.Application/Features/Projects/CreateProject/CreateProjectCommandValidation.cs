@@ -3,7 +3,7 @@ using TaskManager.Application.Features.Projects.Dto;
 
 namespace TaskManager.Application.Features.Projects.CreateProject;
 
-public class CreateProjectCommandValidation : AbstractValidator<CreateProjectCommand>
+public class CreateProjectCommandValidation : AbstractValidator<LogoutUserCommandValidation>
 {
     public CreateProjectCommandValidation()
     {

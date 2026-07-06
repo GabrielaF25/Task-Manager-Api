@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using TaskManager.Application.Abstractions.Services;
-using TaskManager.Application.Features.Users.Dtos;
 
 namespace TaskManager.Application.Features.Users.CreateUser;
 

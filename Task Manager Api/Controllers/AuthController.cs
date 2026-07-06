@@ -1,15 +1,13 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using TaskManager.Application.Common.ResultPattern;
 using TaskManager.Application.Features.Authentication.Dtos;
-using TaskManager.Application.Features.Authentication.Login.LoginUser;
-using TaskManager.Application.Features.Authentication.LoginUser;
-using TaskManager.Application.Features.Authentication.RefreshTokens.CreateRefreshToken;
-using TaskManager.Application.Features.RefreshTokens.CreateRefreshToken;
+using TaskManager.Application.Features.Authentication.Login;
+using TaskManager.Application.Features.Authentication.Logout;
+using TaskManager.Application.Features.Authentication.RefreshTokens;
 using TaskManager.Application.Features.Users.CreateUser;
 using TaskManager.Application.Features.Users.Dtos;
 using TaskManager.Application.Features.Users.GetUser;
-using TaskManager.Domain.Entities;
+using TaskManager.Application.Features.Users.UpdateUserRole;
 
 namespace Task_Manager_Api.Controllers;
 
@@ -18,7 +16,7 @@ namespace Task_Manager_Api.Controllers;
 public class AuthController : BaseController
 {
     private readonly IMediator _mediator;
-    
+
     public AuthController(IMediator mediator)
     {
         _mediator = mediator;
@@ -42,7 +40,7 @@ public class AuthController : BaseController
 
     [HttpPost("login")]
 
-    public async Task<ActionResult<LoginResponse>> LoginUser([FromBody]UserCredentials userCredentials, CancellationToken  cancellationToken)
+    public async Task<ActionResult<LoginResponse>> LoginUser([FromBody] UserCredentials userCredentials, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new LoginUserCommand(userCredentials), cancellationToken);
 
@@ -63,7 +61,15 @@ public class AuthController : BaseController
 
     public async Task<ActionResult> RevokeRefreshToken([FromBody] RefreshTokenRequest token, CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(new RevokeRefreshToken(token), cancellationToken);
+        var result = await _mediator.Send(new LogoutUserCommand(token), cancellationToken);
+
+        return HandleResult(result);
+    }
+
+    [HttpPatch("role")]
+    public async Task<ActionResult<UserResponse>> UpdateUserRole([FromBody] UpdateUserRequest updateUserRequest, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new UpdateUserRoleCommand(updateUserRequest), cancellationToken);
 
         return HandleResult(result);
     }

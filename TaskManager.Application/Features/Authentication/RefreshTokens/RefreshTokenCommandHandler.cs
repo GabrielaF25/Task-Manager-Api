@@ -1,11 +1,11 @@
 ﻿using MediatR;
+using TaskManager.Application.Abstractions.Authetication;
 using TaskManager.Application.Abstractions.Persistence;
 using TaskManager.Application.Common.ResultPattern;
 using TaskManager.Application.Features.Authentication.Dtos;
 using TaskManager.Domain.Entities;
-using TaskManager.Infrastructure.Authentication;
 
-namespace TaskManager.Application.Features.Authentication.RefreshToken;
+namespace TaskManager.Application.Features.Authentication.RefreshTokens;
 
 public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, Result<RefreshTokenResponse>>
 {
@@ -34,7 +34,7 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, R
 
         var newAccessToken = _jwtTokenGenerator.GenerateJwt(user);
 
-        var newRefreshToken = RefreshToken.Create(_jwtTokenGenerator.GenerateRefreshToken(),  _jwtTokenGenerator.GerRefreshTokenExperation());
+        var newRefreshToken = RefreshToken.Create(_jwtTokenGenerator.GenerateRefreshToken(), _jwtTokenGenerator.GerRefreshTokenExperation());
 
         user.AddRefreshToken(newRefreshToken);
 

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TaskManager.Application.Features.Users.Dtos;
+namespace TaskManager.Application.Features.Users.CreateUser;
 
 public class CreateUserRequest
 {

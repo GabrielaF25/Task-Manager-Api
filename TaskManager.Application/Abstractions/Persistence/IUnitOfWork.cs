@@ -1,6 +1,4 @@
-﻿using TaskManager.Infrastructure.Persistence;
-
-namespace TaskManager.Application.Abstractions.Persistence;
+﻿namespace TaskManager.Application.Abstractions.Persistence;
 
 public interface IUnitOfWork
 {

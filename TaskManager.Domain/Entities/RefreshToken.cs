@@ -24,6 +24,7 @@ public class RefreshToken
             CreatedAt = DateTimeOffset.UtcNow
         };
     } 
+
     public void Revoke()
     {
         RevokedAt = DateTimeOffset.UtcNow;

@@ -4,8 +4,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using TaskManager.Application.Abstractions.Authetication;
 using TaskManager.Domain.Entities;
-using TaskManager.Infrastructure.Authentication;
 
 namespace TaskManager.Infrastructure.Services.Authentication;
 
@@ -23,6 +23,7 @@ public class JwtTokenGenerator : IJwtTokenGenerator
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
+            new Claim(ClaimTypes.Role, user.UserRole.ToString()),
             new Claim(ClaimTypes.Name, user.UserName),
         };
 

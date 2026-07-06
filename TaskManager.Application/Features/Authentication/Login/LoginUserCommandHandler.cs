@@ -4,7 +4,6 @@ using TaskManager.Application.Abstractions.Persistence;
 using TaskManager.Application.Common.ResultPattern;
 using TaskManager.Application.Features.Authentication.Dtos;
 using TaskManager.Domain.Entities;
-using TaskManager.Infrastructure.Authentication;
 
 namespace TaskManager.Application.Features.Authentication.Login;
 

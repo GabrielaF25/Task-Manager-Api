@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using FluentValidation;
 using MediatR;
 using TaskManager.Application.Abstractions.Persistence;
 using TaskManager.Application.Abstractions.Services;
@@ -9,7 +8,7 @@ using TaskManager.Domain.Entities;
 
 namespace TaskManager.Application.Features.Projects.CreateProject;
 
-public class CreateProjectCommandHandler : IRequestHandler<CreateProjectCommand,Result<ProjectDto>>
+public class CreateProjectCommandHandler : IRequestHandler<LogoutUserCommandValidation,Result<ProjectDto>>
 {
     private readonly IProjectRepository _projectRepository;
     private readonly IMapper _mapper;
@@ -26,7 +25,7 @@ public class CreateProjectCommandHandler : IRequestHandler<CreateProjectCommand,
         _mapper = mapper;
     }
 
-    public async Task<Result<ProjectDto>> Handle(CreateProjectCommand createProjectCommand, CancellationToken ct)
+    public async Task<Result<ProjectDto>> Handle(LogoutUserCommandValidation createProjectCommand, CancellationToken ct)
     {
         var ownerId = _currentUserService.GetCurrentUserId();
 

@@ -1,4 +1,6 @@
-﻿namespace TaskManager.Domain.Entities;
+﻿using TaskManager.Domain.Enums;
+
+namespace TaskManager.Domain.Entities;
 
 public class User
 {
@@ -15,6 +17,8 @@ public class User
     public int Id { get; private set; }
     public string UserName { get; private set; } = null!;
     public string Email { get; private set; } = null!;
+
+    public UserRole UserRole{get; private set;} = UserRole.User;
     public string PasswordHash {  get; private set; } = null!;
     public DateTimeOffset CreatedAt {  get; private set; }
     public ICollection<RefreshToken> RefreshTokens { get; private set; } = [];
@@ -28,4 +32,10 @@ public class User
     {
         RefreshTokens.Add(refreshToken);
     }
+
+    public void ChangeRole(UserRole userRole)
+    {
+        UserRole = userRole;
+    }
+
 }

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using System.Text.Json.Serialization;
 using Task_Manager_Api.Middlewares;
 using Task_Manager_Api.Service;
 using TaskManager.Application.Abstractions.Services;
@@ -24,7 +25,12 @@ internal class Program
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
         );
 
-        builder.Services.AddControllers();
+        builder.Services.AddControllers().AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.Converters.Add(
+                new JsonStringEnumConverter());
+        }
+            );
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen( c =>
@@ -87,6 +93,7 @@ internal class Program
                 Encoding.UTF8.GetBytes(jwtSettings.Key))
                 };
             });
+
 
         var app = builder.Build();
 

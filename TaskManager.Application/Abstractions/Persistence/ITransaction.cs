@@ -1,5 +1,4 @@
-﻿
-namespace TaskManager.Infrastructure.Persistence;
+﻿namespace TaskManager.Application.Abstractions.Persistence;
 
 public interface ITransaction : IAsyncDisposable
 {

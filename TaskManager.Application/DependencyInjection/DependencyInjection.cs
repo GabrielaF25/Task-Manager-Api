@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using TaskManager.Application.Behaviors;
+using TaskManager.Application.Features.Authentication.RefreshTokens;
 using TaskManager.Application.Features.Projects.CreateProject;
 using TaskManager.Application.Features.Projects.Mappings;
 using TaskManager.Application.Features.Todo.Mapper;
@@ -18,7 +19,9 @@ public static class ServiceCollection
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
 
-        services.AddValidatorsFromAssemblyContaining<CreateProjectCommand>();
+        services.AddValidatorsFromAssemblyContaining<CreateProjectCommandValidation>();
+        services.AddValidatorsFromAssemblyContaining<RefreshTokenCommandValidation>();
+        services.AddValidatorsFromAssemblyContaining<LogoutUserCommandValidation>();
         services.AddValidatorsFromAssemblyContaining<CreateTodoCommand>();
         services.AddValidatorsFromAssemblyContaining<PaginationParamValidation>();
         services.AddValidatorsFromAssemblyContaining<CreateUserCommand>();
@@ -31,7 +34,7 @@ public static class ServiceCollection
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnitOfWorkBehavior<,>));
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(Performancebehavior<,>));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(PerformanceBehavior<,>));
 
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
 
