@@ -1,6 +1,8 @@
-﻿namespace TaskManager.Domain.Entities;
+﻿using TaskManager.Domain.Common;
 
-public class TodoItem
+namespace TaskManager.Domain.Entities;
+
+public class TodoItem : Entity
 {
     private TodoItem() { }
     public static TodoItem Create(string title, string? description, int projectId)

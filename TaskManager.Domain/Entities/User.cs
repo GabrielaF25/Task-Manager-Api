@@ -1,17 +1,23 @@
-﻿using TaskManager.Domain.Enums;
+﻿using TaskManager.Domain.Common;
+using TaskManager.Domain.Enums;
+using TaskManager.Domain.Events;
 
 namespace TaskManager.Domain.Entities;
 
-public class User
+public class User : Entity
 {
     private User() { }
     public static User Register(string email, string userName)
     {
-        return new User() {
+        var user =  new User() {
             Email = email,
             UserName = userName,
             CreatedAt = DateTimeOffset.UtcNow
         };
+
+        user.AddDomainEvent(new UserRegisteredEvent(user.Id));
+
+        return user;
     }
 
     public int Id { get; private set; }

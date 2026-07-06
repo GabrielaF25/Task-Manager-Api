@@ -1,8 +1,9 @@
 ﻿using System.Reflection.Metadata.Ecma335;
+using TaskManager.Domain.Common;
 
 namespace TaskManager.Domain.Entities;
 
-public class Project
+public class Project : Entity
 {
     private Project() { }
     public static Project Create(string name, string? description, int ownerId) =>
