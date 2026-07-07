@@ -32,6 +32,8 @@ public class UnitOfWorkBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
             await _unitOfWork.SaveChangesAsync(cancellationToken);
             await transaction.CommitAsync(cancellationToken);
 
+            await _unitOfWork.DispatchDomainEventAsync(cancellationToken);
+
             return response;
         }
         catch

@@ -15,7 +15,7 @@ public class User : Entity
             CreatedAt = DateTimeOffset.UtcNow
         };
 
-        user.AddDomainEvent(new UserRegisteredEvent(user.Id));
+        user.AddDomainEvent(new UserRegisteredEvent(user));
 
         return user;
     }

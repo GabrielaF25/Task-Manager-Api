@@ -1,6 +1,8 @@
-﻿namespace TaskManager.Domain.Common;
+﻿using MediatR;
 
-public interface IDomainEvent
+namespace TaskManager.Domain.Common;
+
+public interface IDomainEvent : INotification
 {
-    DateTimeOffset OccurrendOn { get;}
+    DateTimeOffset OccurredOn { get;}
 }

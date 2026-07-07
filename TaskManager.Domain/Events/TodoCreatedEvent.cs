@@ -3,7 +3,7 @@ using TaskManager.Domain.Entities;
 
 namespace TaskManager.Domain.Events;
 
-public sealed record UserRegisteredEvent(User User) : IDomainEvent
+public record TodoCreatedEvent(TodoItem TodoItem) : IDomainEvent
 {
     public DateTimeOffset OccurredOn => DateTimeOffset.UtcNow;
 }
