@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
 using TaskManager.Application.Features.Authentication.Logout;
 
-public class LogoutUserComandValidation : AbstractValidator<LogoutUserCommand>
+public class LogoutUserCommandValidation : AbstractValidator<LogoutUserCommand>
 {
-    public LogoutUserComandValidation()
+    public LogoutUserCommandValidation()
     {
         RuleFor(x => x.Request.RefreshToken)
             .NotEmpty();

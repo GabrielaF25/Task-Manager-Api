@@ -24,7 +24,7 @@ public class ProjectController : BaseController
     [HttpPost]
     public async Task<ActionResult<ProjectDto>> CreateProject([FromBody] CreateProjectRequest request, CancellationToken ct)
     {
-        var returnedProjectResult = await _mediator.Send(new LogoutUserCommandValidation(request ) , ct);
+        var returnedProjectResult = await _mediator.Send(new CreateProjectCommand(request ) , ct);
 
         return HandleCreatedResult("GetProjectById", returnedProjectResult, dto => new {id = dto.Id });
     }

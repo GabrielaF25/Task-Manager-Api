@@ -4,11 +4,11 @@ using TaskManager.Domain.Events;
 
 namespace TaskManager.Application.DomainEventHandlers;
 
-public class TodoCreatedEvenHandler : INotificationHandler<TodoCreatedEvent>
+public class TodoCreatedEventHandler : INotificationHandler<TodoCreatedEvent>
 {
-    private readonly ILogger<TodoCreatedEvenHandler> _logger;
+    private readonly ILogger<TodoCreatedEventHandler> _logger;
 
-    public TodoCreatedEvenHandler(ILogger<TodoCreatedEvenHandler> logger)
+    public TodoCreatedEventHandler(ILogger<TodoCreatedEventHandler> logger)
     {
         _logger = logger;
     }

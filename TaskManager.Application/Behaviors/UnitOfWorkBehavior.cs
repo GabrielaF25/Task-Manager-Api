@@ -22,7 +22,7 @@ public class UnitOfWorkBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
 
         try
         {
-            var response = await next();
+            var response = await next(cancellationToken);
             if (!response.IsSuccess)
             {
                 await transaction.RollbackAsync(cancellationToken);

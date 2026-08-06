@@ -3,9 +3,9 @@ using TaskManager.Application.Abstractions.Services;
 
 namespace TaskManager.Application.Features.Users.CreateUser;
 
-public class CreateUserValidation : AbstractValidator<CreateUserCommand>
+public class CreateUserCommandValidation : AbstractValidator<CreateUserCommand>
 {
-    public CreateUserValidation(IUserLookupService userLookupService)
+    public CreateUserCommandValidation(IUserLookupService userLookupService)
     {
         RuleFor(u => u.UserToCreate.UserName)
             .NotEmpty()

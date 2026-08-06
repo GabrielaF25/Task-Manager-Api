@@ -12,7 +12,7 @@ using TaskManager.Infrastructure.DbContexts;
 using TaskManager.Infrastructure.DependencyInjection;
 using TaskManager.Infrastructure.Services.Authentication;
 
-internal class Program
+public class Program
 {
     private static void Main(string[] args)
     {

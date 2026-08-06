@@ -4,11 +4,11 @@ using TaskManager.Domain.Events;
 
 namespace TaskManager.Application.DomainEventHandlers;
 
-public class UserRegisteresEventHandler : INotificationHandler<UserRegisteredEvent>
+public class UserRegisteredEventHandler : INotificationHandler<UserRegisteredEvent>
 {
-    private readonly ILogger<UserRegisteresEventHandler> _logger;
+    private readonly ILogger<UserRegisteredEventHandler> _logger;
 
-    public UserRegisteresEventHandler(ILogger<UserRegisteresEventHandler> logger)
+    public UserRegisteredEventHandler(ILogger<UserRegisteredEventHandler> logger)
     {
         _logger = logger;
     }

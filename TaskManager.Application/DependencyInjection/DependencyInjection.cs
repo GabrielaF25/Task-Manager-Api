@@ -18,10 +18,10 @@ public static class ServiceCollection
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
-
+        services.AddValidatorsFromAssemblyContaining<LogoutUserCommandValidation>();
         services.AddValidatorsFromAssemblyContaining<CreateProjectCommandValidation>();
         services.AddValidatorsFromAssemblyContaining<RefreshTokenCommandValidation>();
-        services.AddValidatorsFromAssemblyContaining<LogoutUserCommandValidation>();
+        services.AddValidatorsFromAssemblyContaining<CreateProjectCommand>();
         services.AddValidatorsFromAssemblyContaining<CreateTodoCommand>();
         services.AddValidatorsFromAssemblyContaining<PaginationParamValidation>();
         services.AddValidatorsFromAssemblyContaining<CreateUserCommand>();
