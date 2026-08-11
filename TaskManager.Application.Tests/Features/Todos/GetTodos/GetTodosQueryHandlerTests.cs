@@ -71,7 +71,7 @@ public class GetTodosQueryHandlerTests
         result.Errors.Should().Contain("Page number must be greater than 0.");
 
         _todoRepositoryMock.Verify(
-            x => x.GetAllAsync(
+            x => x.GetTodosAsync(
                 It.IsAny<QueryParamTodo>(),
                 It.IsAny<PaginationParam>(),
                 It.IsAny<CancellationToken>()),
@@ -134,7 +134,7 @@ public class GetTodosQueryHandlerTests
             .ReturnsAsync(new ValidationResult());
 
         _todoRepositoryMock
-            .Setup(x => x.GetAllAsync(
+            .Setup(x => x.GetTodosAsync(
                 queryParam,
                 pagination,
                 It.IsAny<CancellationToken>()))
@@ -160,7 +160,7 @@ public class GetTodosQueryHandlerTests
         result.Data.Items.Should().BeEquivalentTo(todoResponses);
 
         _todoRepositoryMock.Verify(
-            x => x.GetAllAsync(
+            x => x.GetTodosAsync(
                 queryParam,
                 pagination,
                 It.IsAny<CancellationToken>()),

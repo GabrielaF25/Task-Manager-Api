@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -6,7 +7,7 @@ using TaskManager.Api.IntegrationTests.Common;
 using TaskManager.Application.Features.Users.CreateUser;
 using TaskManager.Application.Features.Users.Dtos;
 
-namespace TaskManager.Api.IntegrationTests.Authentication;
+namespace TaskManager.Api.IntegrationTests.Controllers.Authentication;
 
 public class SearchUserTests : IntegrationTestBase
 {
@@ -49,5 +50,29 @@ public class SearchUserTests : IntegrationTestBase
             Assert.That(contentResponse.UserRole, Is.EqualTo(registeredUser.UserRole));
         });
 
+    }
+
+    [Test]
+    public async Task Should_Return_NotFound_When_Requested_User()
+    {
+        // Arrange
+        
+        // Act
+
+        var responseRequest = await Client.GetAsync($"/api/auth/{1}");
+
+        Assert.That(responseRequest.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
+
+        var contentResponse = await responseRequest.Content.ReadFromJsonAsync<ProblemDetails>();
+        // Assert
+
+        Assert.That(contentResponse, Is.Not.Null);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(contentResponse, Is.Not.Null);
+            Assert.That(contentResponse.Title, Is.EqualTo("Resource not found"));
+            Assert.That(contentResponse, Is.Not.Null);
+        });
     }
 }

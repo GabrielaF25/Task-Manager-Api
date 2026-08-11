@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using TaskManager.Api.IntegrationTests.Common;
 
-namespace TaskManager.Api.IntegrationTests.Todos;
+namespace TaskManager.Api.IntegrationTests.Controllers.Todos;
 
 [TestFixture]
 public class TodoControllerTests : IntegrationTestBase

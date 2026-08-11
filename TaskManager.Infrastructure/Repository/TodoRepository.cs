@@ -22,7 +22,7 @@ public class TodoRepository : ITodoRepository
         return itemTodo;
     }
     public async Task<PaginationResult<TodoItem>>
-        GetAllAsync(QueryParamTodo queryParam,PaginationParam pagination, CancellationToken ct)
+        GetTodosAsync(QueryParamTodo queryParam,PaginationParam pagination, CancellationToken ct)
     {
         var itemsTodo =  _context.TodoItems
             .ApplyTodoFilters(queryParam)

@@ -7,6 +7,7 @@ public class RefreshToken
     public DateTimeOffset ExpiresAt { get; private set; }
     public DateTimeOffset CreatedAt { get; private set; }
     public DateTimeOffset? RevokedAt { get; private set; }
+
     public int UserId { get; private set; }
     public User User { get; private set; } = null!;
 

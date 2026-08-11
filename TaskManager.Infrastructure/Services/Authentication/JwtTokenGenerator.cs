@@ -48,7 +48,7 @@ public class JwtTokenGenerator : IJwtTokenGenerator
         return Convert.ToBase64String(randomBytes);
     }
 
-    public DateTimeOffset GerRefreshTokenExperation()
+    public DateTimeOffset GetRefreshTokenExperation()
     {
         return DateTimeOffset.UtcNow.AddMinutes(_jwtSettings.RefreshTokenExpiryMinutes);
     }

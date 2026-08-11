@@ -124,7 +124,7 @@ public class RefreshTokenCommandHandlerTests
             .Returns("new-refresh-token");
 
         _jwtTokenGeneratorMock
-            .Setup(x => x.GerRefreshTokenExperation())
+            .Setup(x => x.GetRefreshTokenExperation())
             .Returns(DateTimeOffset.UtcNow.AddDays(7));
 
         var result = await _handler.Handle(command, CancellationToken.None);

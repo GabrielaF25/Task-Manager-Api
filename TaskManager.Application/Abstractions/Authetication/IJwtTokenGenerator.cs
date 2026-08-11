@@ -6,5 +6,5 @@ public interface IJwtTokenGenerator
 {
     string GenerateJwt(User user);
     string GenerateRefreshToken();
-    DateTimeOffset GerRefreshTokenExperation();
+    DateTimeOffset GetRefreshTokenExperation();
 }

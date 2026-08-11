@@ -34,7 +34,7 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, R
 
         var newAccessToken = _jwtTokenGenerator.GenerateJwt(user);
 
-        var newRefreshToken = RefreshToken.Create(_jwtTokenGenerator.GenerateRefreshToken(), _jwtTokenGenerator.GerRefreshTokenExperation());
+        var newRefreshToken = RefreshToken.Create(_jwtTokenGenerator.GenerateRefreshToken(), _jwtTokenGenerator.GetRefreshTokenExperation());
 
         user.AddRefreshToken(newRefreshToken);
 

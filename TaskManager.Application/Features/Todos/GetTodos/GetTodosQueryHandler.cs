@@ -35,7 +35,7 @@ public class GetTodosQueryHandler : IRequestHandler<GetTodosQuery, Result<Pagina
                 errors,
                 StatusType.ValidationError);
         }
-        var itemsPageResult = await _todoRepository.GetAllAsync(getTodos.QueryParam, getTodos.Pagination, ct);
+        var itemsPageResult = await _todoRepository.GetTodosAsync(getTodos.QueryParam, getTodos.Pagination, ct);
 
         var pageResult = new PaginationResult<TodoResponse>()
         {

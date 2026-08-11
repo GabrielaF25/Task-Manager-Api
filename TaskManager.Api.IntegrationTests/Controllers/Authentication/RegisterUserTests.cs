@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net;
 using System.Net.Http.Json;
@@ -9,7 +10,7 @@ using TaskManager.Application.Features.Users.CreateUser;
 using TaskManager.Application.Features.Users.Dtos;
 using TaskManager.Infrastructure.DbContexts;
 
-namespace TaskManager.Api.IntegrationTests.Authentication;
+namespace TaskManager.Api.IntegrationTests.Controllers.Authentication;
 
 public class RegisterUserTests : IntegrationTestBase
 {
@@ -50,5 +51,39 @@ public class RegisterUserTests : IntegrationTestBase
         Assert.That(userFromDatabase, Is.Not.Null);
         Assert.That(userFromDatabase!.UserName, Is.EqualTo(request.UserName));
         Assert.That(userFromDatabase.Email, Is.EqualTo(request.Email));
+    }
+
+    [Test]
+    public async Task Register_Should_Return_BadRequest_When_Request_Is_Invalid()
+    {
+        // Arrange
+        var request = new CreateUserRequest
+        {
+            UserName = "aa",
+            Email = "invalid-email",
+            Password = "short"
+        };
+
+        // Act
+        var response = await Client!.PostAsJsonAsync(
+            "/api/auth/register",
+            request);
+
+        // Assert
+        Assert.That(
+            response.StatusCode,
+            Is.EqualTo(HttpStatusCode.BadRequest));
+
+        var problemDetails = await response.Content
+            .ReadFromJsonAsync<ProblemDetails>();
+
+        Assert.That(problemDetails, Is.Not.Null);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(problemDetails!.Status, Is.EqualTo(400));
+            Assert.That(problemDetails.Title, Is.EqualTo("Validation failed"));
+            Assert.That(problemDetails.Detail, Is.Not.Null.And.Not.Empty);
+        });
     }
 }       

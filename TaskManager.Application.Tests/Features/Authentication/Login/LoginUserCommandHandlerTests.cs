@@ -128,7 +128,7 @@ public class LoginUserCommandHandlerTests
             .Returns("refresh-token");
 
         _jwtTokenGeneratorMock
-            .Setup(x => x.GerRefreshTokenExperation())
+            .Setup(x => x.GetRefreshTokenExperation())
             .Returns(DateTimeOffset.UtcNow.AddDays(7));
 
         // Act

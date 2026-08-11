@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.Data;
-using NUnit.Framework.Internal.Execution;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -9,8 +9,9 @@ using TaskManager.Application.Features.Projects.Dto;
 using TaskManager.Application.Features.Users.CreateUser;
 using TaskManager.Application.Features.Users.Dtos;
 using TaskManager.Domain.Enums;
+using TaskManager.Infrastructure.DbContexts;
 
-namespace TaskManager.Api.IntegrationTests.Projects;
+namespace TaskManager.Api.IntegrationTests.Controllers.Projects;
 
 public class CreateProjectTests : IntegrationTestBase
 {
@@ -19,6 +20,8 @@ public class CreateProjectTests : IntegrationTestBase
     {
         // Arrange
 
+        TestUserContext.Role = UserRole.User; // change the role for authenticate
+
         var registerRequest = new CreateUserRequest
         {
             UserName = "Gabriela",
@@ -26,7 +29,7 @@ public class CreateProjectTests : IntegrationTestBase
             Password = "Password123"
         };
 
-        var registerResponse = await Client!.PostAsJsonAsync(
+        var registerResponse = await Client.PostAsJsonAsync(
             "/api/auth/register",
             registerRequest);
 
@@ -41,8 +44,6 @@ public class CreateProjectTests : IntegrationTestBase
             .ReadFromJsonAsync<UserResponse>(jsonOptions);
 
         Assert.That(registeredUser, Is.Not.Null);
-
-        TestUserContext.Role = UserRole.User;
 
         var project = new CreateProjectRequest()
         {
@@ -62,7 +63,27 @@ public class CreateProjectTests : IntegrationTestBase
 
         Assert.That(response, Is.Not.Null);
 
-        Assert.That(response.Name, Is.EqualTo(project.Name));
-        Assert.That(response.Description, Is.EqualTo(project.Description));
+        Assert.Multiple(() =>
+        {
+            Assert.That(response.Name, Is.EqualTo(project.Name));
+            Assert.That(response.Description, Is.EqualTo(project.Description));
+        });
+
+        // Verify in database
+
+        using var scope =  Factory.Services.CreateScope();
+
+        using var dbContext = scope.ServiceProvider.GetRequiredService<TaskManagerDbContext>();
+
+        var projectFromDb = await dbContext.Projects.FirstOrDefaultAsync();
+
+        Assert.That(projectFromDb, Is.Not.Null);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(projectFromDb.Name, Is.EqualTo(project.Name));
+            Assert.That(projectFromDb.Description, Is.EqualTo(project.Description));
+        });
+
     }
 }

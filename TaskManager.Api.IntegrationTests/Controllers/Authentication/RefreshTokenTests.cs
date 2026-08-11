@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Net.Http.Json;
 using TaskManager.Api.IntegrationTests.Common;
 using TaskManager.Application.Features.Authentication.Dtos;
 using TaskManager.Application.Features.Users.CreateUser;
 
-namespace TaskManager.Api.IntegrationTests.Authentication;
+namespace TaskManager.Api.IntegrationTests.Controllers.Authentication;
 
 public class RefreshTokenTests : IntegrationTestBase
 {
@@ -98,8 +99,14 @@ public class RefreshTokenTests : IntegrationTestBase
 
         var requestAgainToken = await Client.PostAsJsonAsync("/api/auth/refresh", tokenRequest);
 
+        Assert.That(requestAgainToken.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
+
+        var content = await requestAgainToken.Content.ReadFromJsonAsync<ProblemDetails>();
+
         // Assert
 
-        Assert.That(requestAgainToken.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
+        Assert.That(content, Is.Not.Null);
+        Assert.That(content.Status, Is.EqualTo(StatusCodes.Status401Unauthorized));
+        Assert.That(content.Title, Is.EqualTo("Unauthorized"));
     }
 }

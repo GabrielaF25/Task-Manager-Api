@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net;
 using System.Net.Http.Json;
@@ -62,6 +64,26 @@ public class ChangeUserRoleTests : IntegrationTestBase
 
         Assert.That(user, Is.Not.Null);
         Assert.That(user.UserRole, Is.EqualTo(UserRole.Unknown));
+    }
+
+    [Test]
+    public async Task When_User_Not_Exist_Should_Return_ProblemDetails()
+    {
+     
+        // Arrange
+
+        // Act
+
+        var responseRequest = await Client.PatchAsJsonAsync("/api/auth/role", new UpdateUserRequest { Id = 99, Role = UserRole.Unknown});
+        Assert.That(responseRequest.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
+
+
+        var response = await responseRequest.Content.ReadFromJsonAsync<ProblemDetails>();
+
+        // Assert - HTTP
+        Assert.That(response, Is.Not.Null);
+        Assert.That(response.Status, Is.EqualTo(StatusCodes.Status404NotFound));
+        Assert.That(response.Title, Is.EqualTo("Resource not found"));
     }
 
 }

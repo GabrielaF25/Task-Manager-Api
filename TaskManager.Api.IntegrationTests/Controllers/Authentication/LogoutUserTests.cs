@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net;
 using System.Net.Http.Json;
@@ -7,7 +9,7 @@ using TaskManager.Application.Features.Authentication.Dtos;
 using TaskManager.Application.Features.Users.CreateUser;
 using TaskManager.Infrastructure.DbContexts;
 
-namespace TaskManager.Api.IntegrationTests.Authentication;
+namespace TaskManager.Api.IntegrationTests.Controllers.Authentication;
 
 public class LogoutUserTests : IntegrationTestBase
 {
@@ -72,6 +74,29 @@ public class LogoutUserTests : IntegrationTestBase
             Assert.That(refreshToken.IsActive, Is.False);
             Assert.That(refreshToken.RevokedAt, Is.Not.Null);
         });
+
+    }
+
+    [Test]
+
+    public async Task When_Token_Invalid_Should_Return_Forbidden()
+    {
+        //Arrange
+
+        // Act
+
+        var logoutRequest = await Client.PostAsJsonAsync("/api/auth/logout", new RefreshTokenRequest() { RefreshToken = "Token Invalid"});
+
+        Assert.That(logoutRequest.StatusCode, Is.EqualTo(HttpStatusCode.Forbidden));
+
+        var content = await logoutRequest.Content.ReadFromJsonAsync<ProblemDetails>();
+
+        // Assert
+
+        Assert.That(content, Is.Not.Null);
+        Assert.That(content.Status, Is.EqualTo(StatusCodes.Status403Forbidden));
+        Assert.That(content.Title, Is.EqualTo("Forbidden"));
+
 
     }
 }
