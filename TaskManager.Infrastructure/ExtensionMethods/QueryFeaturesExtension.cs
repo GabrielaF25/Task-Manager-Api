@@ -11,7 +11,7 @@ public static class QueryFeaturesExtension
         if(!string.IsNullOrWhiteSpace(filter.Search))
         {
             var search = filter.Search.Trim().ToLower();
-            query = query.Where(t =>t.Title.ToLower().Contains(search));
+            query = query.Where(t => t.Title.ToLower().Contains(search));
         }
 
         if(filter.IsCompleted is not null)
@@ -56,7 +56,6 @@ public static class QueryFeaturesExtension
         {
             query = query.Where(p => p.Name.ToLower().Contains(search));
         }
-
 
         return query;
     }
