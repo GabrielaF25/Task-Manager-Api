@@ -12,5 +12,5 @@ public class CreateTodoRequest
     public string? Description { get; set; }
 
     [Required]
-    public  int ProjectId { get; set; }
+    public  Guid ProjectId { get; set; }
 }

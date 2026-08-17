@@ -27,7 +27,7 @@ public class TodoCreatedEventHandlerTests
         var todo = TodoItem.Create(
             "Implement tests",
             "Write unit tests for event handlers",
-            1);
+            Guid.NewGuid());
 
         var domainEvent = new TodoCreatedEvent(todo);
 

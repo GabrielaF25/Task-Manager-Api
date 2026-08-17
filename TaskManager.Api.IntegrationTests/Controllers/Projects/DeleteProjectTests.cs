@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,16 +24,15 @@ public class DeleteProjectTests : IntegrationTestBase
     {
         // Arrange
 
-        TestUserContext.Role = UserRole.User; // change the role for authenticate
-
         var registerRequest = new CreateUserRequest
         {
             UserName = "Gabriela",
             Email = "gabriela@test.com",
-            Password = "Password123"
+            Password = "Password123",
+            Role = UserRole.User
         };
 
-        var registerResponse = await Client!.PostAsJsonAsync(
+        var registerResponse = await Client.PostAsJsonAsync(
             "/api/auth/register",
             registerRequest);
 
@@ -48,6 +48,10 @@ public class DeleteProjectTests : IntegrationTestBase
 
         Assert.That(registeredUser, Is.Not.Null);
 
+
+        TestUserContext.Role = registeredUser.UserRole;
+        TestUserContext.UserId = registeredUser.Id;
+
         var project = new CreateProjectRequest()
         {
             Name = "Test Project",
@@ -58,9 +62,13 @@ public class DeleteProjectTests : IntegrationTestBase
 
         Assert.That(responseRequest.StatusCode, Is.EqualTo(HttpStatusCode.Created));
 
+        var content = await responseRequest.Content.ReadFromJsonAsync<UserResponse>();
+        Assert.That(content, Is.Not.Null);
+
+
         // Act
 
-        var deleteRequest = await Client.DeleteAsync($"/api/projects/{1}");
+        var deleteRequest = await Client.DeleteAsync($"/api/projects/{content.Id}");
 
         // Assert - HTTP
 
@@ -88,7 +96,8 @@ public class DeleteProjectTests : IntegrationTestBase
         {
             UserName = "Gabriela",
             Email = "gabriela@test.com",
-            Password = "Password123"
+            Password = "Password123",
+            Role = UserRole.User
         };
 
         var registerResponse = await Client!.PostAsJsonAsync(
@@ -99,10 +108,20 @@ public class DeleteProjectTests : IntegrationTestBase
             registerResponse.StatusCode,
             Is.EqualTo(HttpStatusCode.Created));
 
-    
+        var jsonOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web);
+        jsonOptions.Converters.Add(new JsonStringEnumConverter());
+
+        var registeredUser = await registerResponse.Content
+            .ReadFromJsonAsync<UserResponse>(jsonOptions);
+
+        Assert.That(registeredUser, Is.Not.Null);
+
+
+        TestUserContext.Role = registeredUser.UserRole;
+        TestUserContext.UserId = registeredUser.Id;
         // Act
 
-        var deleteRequest = await Client.DeleteAsync($"/api/projects/{1}");
+        var deleteRequest = await Client.DeleteAsync($"/api/projects/{Guid.NewGuid()}");
 
         Assert.That(deleteRequest.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
         var content = await deleteRequest.Content.ReadFromJsonAsync<ProblemDetails>();

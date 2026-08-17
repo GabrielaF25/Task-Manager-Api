@@ -31,7 +31,7 @@ public class UpdateTodoCommandHandlerTests
     public async Task Handle_Should_Return_NotFound_When_Todo_Does_Not_Exist()
     {
         // Arrange
-        var command = new UpdateTodoCommand(1);
+        var command = new UpdateTodoCommand(Guid.NewGuid());
 
         _todoRepositoryMock
             .Setup(x => x.GetByIdAsync(command.Id, It.IsAny<CancellationToken>()))
@@ -54,12 +54,12 @@ public class UpdateTodoCommandHandlerTests
     public async Task Handle_Should_Complete_Todo_When_Todo_Exists()
     {
         // Arrange
-        var command = new UpdateTodoCommand(1);
+        var command = new UpdateTodoCommand(Guid.NewGuid());
 
         var todo = TodoItem.Create(
             "Learn NUnit",
             "Write tests",
-            1);
+            Guid.NewGuid());
 
         var todoResponse = new TodoResponse
         {

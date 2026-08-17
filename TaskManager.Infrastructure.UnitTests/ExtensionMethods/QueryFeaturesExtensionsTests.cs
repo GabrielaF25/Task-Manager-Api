@@ -13,13 +13,13 @@ public class QueryFeaturesExtensionsTests
         // Arrange
         var list = new List<TodoItem>
         {
-            TodoItem.Create("Test1", "Description1", 1),
-            TodoItem.Create("Test2", "Description1", 1),
-            TodoItem.Create("Test3", "Description1", 1),
-            TodoItem.Create("Test4", "Description1", 1),
-            TodoItem.Create("Test5", "Description1", 1),
-            TodoItem.Create("Test6", "Description1", 1),
-            TodoItem.Create("Test7", "Description1", 1),
+            TodoItem.Create("Test1", "Description1", Guid.NewGuid()),
+            TodoItem.Create("Test2", "Description1", Guid.NewGuid()),
+            TodoItem.Create("Test3", "Description1", Guid.NewGuid()),
+            TodoItem.Create("Test4", "Description1", Guid.NewGuid()),
+            TodoItem.Create("Test5", "Description1", Guid.NewGuid()),
+            TodoItem.Create("Test6", "Description1", Guid.NewGuid()),
+            TodoItem.Create("Test7", "Description1", Guid.NewGuid()),
         }.AsQueryable();
 
         var filer = new QueryParamTodo()
@@ -46,13 +46,13 @@ public class QueryFeaturesExtensionsTests
     {
         // Arrange
 
-        var todo1 = TodoItem.Create("Test1", "Description1", 1);
-        var todo2 = TodoItem.Create("Test2", "Description1", 1);
-        var todo3 = TodoItem.Create("Test3", "Description1", 1);
-        var todo4 = TodoItem.Create("Test4", "Description1", 1);
-        var todo5 = TodoItem.Create("Test5", "Description1", 1);
-        var todo6 = TodoItem.Create("Test6", "Description1", 1);
-        var todo7 = TodoItem.Create("Test7", "Description1", 1);
+        var todo1 = TodoItem.Create("Test1", "Description1", Guid.NewGuid());
+        var todo2 = TodoItem.Create("Test2", "Description1", Guid.NewGuid());
+        var todo3 = TodoItem.Create("Test3", "Description1", Guid.NewGuid() );
+        var todo4 = TodoItem.Create("Test4", "Description1", Guid.NewGuid());
+        var todo5 = TodoItem.Create("Test5", "Description1", Guid.NewGuid());
+        var todo6 = TodoItem.Create("Test6", "Description1", Guid.NewGuid());
+        var todo7 = TodoItem.Create("Test7", "Description1", Guid.NewGuid());
 
         todo1.Complete();
         todo3.Complete();
@@ -83,13 +83,13 @@ public class QueryFeaturesExtensionsTests
     {
         // Arrange
 
-        var todo1 = TodoItem.Create("Test1", "Description1", 1);
-        var todo2 = TodoItem.Create("Test2", "Description1", 1);
-        var todo3 = TodoItem.Create("Test3", "Description1", 1);
-        var todo4 = TodoItem.Create("Test4", "Description1", 1);
-        var todo5 = TodoItem.Create("Test5", "Description1", 1);
-        var todo6 = TodoItem.Create("Test6", "Description1", 1);
-        var todo7 = TodoItem.Create("Test7", "Description1", 1);
+        var todo1 = TodoItem.Create("Test1", "Description1", Guid.NewGuid());
+        var todo2 = TodoItem.Create("Test2", "Description1", Guid.NewGuid());
+        var todo3 = TodoItem.Create("Test3", "Description1", Guid.NewGuid());
+        var todo4 = TodoItem.Create("Test4", "Description1", Guid.NewGuid());
+        var todo5 = TodoItem.Create("Test5", "Description1", Guid.NewGuid());
+        var todo6 = TodoItem.Create("Test6", "Description1", Guid.NewGuid());
+        var todo7 = TodoItem.Create("Test7", "Description1", Guid.NewGuid());
 
         todo1.Complete();
         todo3.Complete();
@@ -120,9 +120,9 @@ public class QueryFeaturesExtensionsTests
     {
         var todos = new List<TodoItem>
         {
-            TodoItem.Create("Charlie", null, 1),
-            TodoItem.Create("Alpha", null, 1),
-            TodoItem.Create("Bravo", null, 1)
+            TodoItem.Create("Charlie", null, Guid.NewGuid()),
+            TodoItem.Create("Alpha", null, Guid.NewGuid()),
+            TodoItem.Create("Bravo", null, Guid.NewGuid())
         }.AsQueryable();
 
         var sorting = new QueryParamTodo
@@ -145,9 +145,9 @@ public class QueryFeaturesExtensionsTests
     {
         var todos = new List<TodoItem>
         {
-            TodoItem.Create("Charlie", null, 1),
-            TodoItem.Create("Alpha", null, 1),
-            TodoItem.Create("Bravo", null, 1)
+            TodoItem.Create("Charlie", null, Guid.NewGuid()),
+            TodoItem.Create("Alpha", null, Guid.NewGuid()),
+            TodoItem.Create("Bravo", null, Guid.NewGuid())
         }.AsQueryable();
 
         var sorting = new QueryParamTodo
@@ -170,9 +170,9 @@ public class QueryFeaturesExtensionsTests
     {
         var projects = new List<Project>
         {
-            Project.Create("Task Manager", null, 1),
-            Project.Create("Shop App", null, 1),
-            Project.Create("Task Tracker", null, 1)
+            Project.Create("Task Manager", null, Guid.NewGuid()),
+            Project.Create("Shop App", null, Guid.NewGuid()),
+            Project.Create("Task Tracker", null, Guid.NewGuid())
         }.AsQueryable();
 
         var filter = new QueryParamProject
@@ -196,9 +196,9 @@ public class QueryFeaturesExtensionsTests
     {
         var projects = new List<Project>
         {
-            Project.Create("Bravo", null, 1),
-            Project.Create("Alpha", null, 1),
-            Project.Create("Charlie", null, 1)
+            Project.Create("Bravo", null, Guid.NewGuid()),
+            Project.Create("Alpha", null, Guid.NewGuid()),
+            Project.Create("Charlie", null, Guid.NewGuid())
         }.AsQueryable();
 
         var filter = new QueryParamProject

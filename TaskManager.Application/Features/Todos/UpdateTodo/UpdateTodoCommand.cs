@@ -4,4 +4,4 @@ using TaskManager.Application.Features.Todos.Dtos;
 
 namespace TaskManager.Application.Features.Todos.UpdateTodo;
 
-public record UpdateTodoCommand(int Id) : IRequest<Result<TodoResponse>>;
+public record UpdateTodoCommand(Guid Id) : IRequest<Result<TodoResponse>>;

@@ -4,6 +4,6 @@ namespace TaskManager.Application.Abstractions.Services
 {
     public interface ICurrentUserService
     {
-        int GetCurrentUserId();
+        Guid GetCurrentUserId();
     }
 }

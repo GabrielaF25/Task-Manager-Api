@@ -9,6 +9,6 @@ namespace TaskManager.Api.IntegrationTests.Common;
 
 public static class TestUserContext
 {
-    public static int UserId { get; set; } = 1;
+    public static Guid UserId { get; set; } = Guid.NewGuid();
     public static UserRole Role { get; set; } = UserRole.Admin;
 }

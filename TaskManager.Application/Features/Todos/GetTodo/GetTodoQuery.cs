@@ -4,4 +4,4 @@ using TaskManager.Application.Features.Todos.Dtos;
 
 namespace TaskManager.Application.Features.Todos.Queries.GetTodo;
 
-public record class GetTodoQuery(int Id) :IRequest<Result<TodoResponse>>;
+public record class GetTodoQuery(Guid Id) :IRequest<Result<TodoResponse>>;

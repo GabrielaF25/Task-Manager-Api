@@ -32,7 +32,7 @@ public class GetTodoQueryHandlerTests
     public async Task Handle_Should_Return_NotFound_When_Todo_Does_Not_Exist()
     {
         // Arrange
-        var query = new GetTodoQuery(1);
+        var query = new GetTodoQuery(Guid.NewGuid());
 
         _todoRepositoryMock
             .Setup(x => x.GetByIdAsync(query.Id, It.IsAny<CancellationToken>()))
@@ -55,12 +55,12 @@ public class GetTodoQueryHandlerTests
     public async Task Handle_Should_Return_TodoResponse_When_Todo_Exists()
     {
         // Arrange
-        var query = new GetTodoQuery(1);
+        var query = new GetTodoQuery(Guid.NewGuid());
 
         var todo = TodoItem.Create(
             "Learn NUnit",
             "Write unit tests",
-            1);
+            Guid.NewGuid());
 
         var todoResponse = new TodoResponse
         {

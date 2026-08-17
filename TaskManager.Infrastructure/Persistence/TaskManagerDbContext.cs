@@ -21,6 +21,13 @@ public class TaskManagerDbContext : DbContext
             .ToTable("Todos");
 
         modelBuilder.Entity<TodoItem>()
+            .HasKey(k => k.Id);
+
+        modelBuilder.Entity<TodoItem>()
+            .Property(k => k.Id)
+            .ValueGeneratedNever();
+
+        modelBuilder.Entity<TodoItem>()
             .Property(t => t.IsCompleted)
             .HasDefaultValue(false);
 
@@ -47,6 +54,13 @@ public class TaskManagerDbContext : DbContext
             .ToTable("Projects");
 
         modelBuilder.Entity<Project>()
+            .HasKey(t => t.Id);
+
+        modelBuilder.Entity<Project>()
+          .Property(t => t.Id)
+          .ValueGeneratedNever();
+
+        modelBuilder.Entity<Project>()
             .Property(t => t.Name)
             .IsRequired()
             .HasMaxLength(100);
@@ -57,6 +71,13 @@ public class TaskManagerDbContext : DbContext
 
         modelBuilder.Entity<User>()
             .ToTable("Users");
+
+        modelBuilder.Entity<User>()
+            .HasKey(t => t.Id);
+
+        modelBuilder.Entity<User>()
+           .Property(t => t.Id)
+           .ValueGeneratedNever();
 
         modelBuilder.Entity<User>()
             .Property(u => u.UserName)
@@ -84,7 +105,11 @@ public class TaskManagerDbContext : DbContext
         .ToTable("RefreshTokens");
 
         modelBuilder.Entity<RefreshToken>()
-            .HasKey(x => x.Id);
+            .HasKey(t => t.Id);
+
+        modelBuilder.Entity<RefreshToken>()
+            .Property(t => t.Id)
+            .ValueGeneratedNever();
 
         modelBuilder.Entity<RefreshToken>()
             .Property(x => x.Token)

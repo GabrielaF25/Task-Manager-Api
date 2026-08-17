@@ -30,7 +30,7 @@ public class DeleteProjectCommandHandlerTests
     public async Task Handle_Should_Return_NotFound_When_Project_Does_Not_Exist()
     {
         // Arrange
-        var command = new DeleteProjectCommand(1);
+        var command = new DeleteProjectCommand(Guid.NewGuid());
 
         _projectRepositoryMock
             .Setup(x => x.GetProjectByIdAsync(command.Id, It.IsAny<CancellationToken>()))
@@ -53,12 +53,12 @@ public class DeleteProjectCommandHandlerTests
     public async Task Handle_Should_Return_Forbidden_When_Current_User_Is_Not_Project_Owner()
     {
         // Arrange
-        var command = new DeleteProjectCommand(1);
+        var command = new DeleteProjectCommand(Guid.NewGuid());
 
         var project = Project.Create(
             "Task Manager",
             "Description",
-            ownerId: 10);
+            ownerId: Guid.NewGuid());
 
         _projectRepositoryMock
             .Setup(x => x.GetProjectByIdAsync(command.Id, It.IsAny<CancellationToken>()))
@@ -66,7 +66,7 @@ public class DeleteProjectCommandHandlerTests
 
         _currentUserServiceMock
             .Setup(x => x.GetCurrentUserId())
-            .Returns(5);
+            .Returns(Guid.NewGuid());
 
         // Act
         var result = await _handler.Handle(command, CancellationToken.None);
@@ -85,12 +85,12 @@ public class DeleteProjectCommandHandlerTests
     public async Task Handle_Should_Delete_Project_When_Current_User_Is_Project_Owner()
     {
         // Arrange
-        var command = new DeleteProjectCommand(1);
-
+        var command = new DeleteProjectCommand(Guid.NewGuid());
+         
         var project = Project.Create(
             "Task Manager",
             "Description",
-            ownerId: 10);
+            ownerId: Guid.NewGuid());
 
         _projectRepositoryMock
             .Setup(x => x.GetProjectByIdAsync(command.Id, It.IsAny<CancellationToken>()))
@@ -98,7 +98,7 @@ public class DeleteProjectCommandHandlerTests
 
         _currentUserServiceMock
             .Setup(x => x.GetCurrentUserId())
-            .Returns(10);
+            .Returns(project.OwnerId);
 
         // Act
         var result = await _handler.Handle(command, CancellationToken.None);

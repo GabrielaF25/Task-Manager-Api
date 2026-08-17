@@ -80,7 +80,7 @@ public class GetProjectsQueryHandlerTests
         _projectRepositoryMock.Verify(
             x => x.GetProjectsAsync(
                 It.IsAny<QueryParamProject>(),
-                It.IsAny<int>(),
+                It.IsAny<Guid>(),
                 It.IsAny<PaginationParam>(),
                 It.IsAny<CancellationToken>()),
             Times.Never);
@@ -104,7 +104,7 @@ public class GetProjectsQueryHandlerTests
         };
 
         var query = new GetProjectQuery(queryParam, pagination);
-        var ownerId = 10;
+        var ownerId = Guid.NewGuid();
 
         var projects = new List<Project>
         {

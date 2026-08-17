@@ -25,7 +25,7 @@ public class DeleteTodoCommandHandlerTests
     public async Task Handle_Should_Return_NotFound_When_Todo_Does_Not_Exist()
     {
         // Arrange
-        var command = new DeleteTodoCommand(1);
+        var command = new DeleteTodoCommand(Guid.NewGuid());
 
         _todoRepositoryMock
             .Setup(x => x.GetByIdAsync(command.Id, It.IsAny<CancellationToken>()))
@@ -48,12 +48,12 @@ public class DeleteTodoCommandHandlerTests
     public async Task Handle_Should_Delete_Todo_When_Todo_Exists()
     {
         // Arrange
-        var command = new DeleteTodoCommand(1);
+        var command = new DeleteTodoCommand(Guid.NewGuid());
 
         var todo = TodoItem.Create(
             "Learn NUnit",
             "Write handler tests",
-            1);
+            Guid.NewGuid());
 
         _todoRepositoryMock
             .Setup(x => x.GetByIdAsync(command.Id, It.IsAny<CancellationToken>()))

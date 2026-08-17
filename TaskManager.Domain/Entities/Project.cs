@@ -7,10 +7,11 @@ namespace TaskManager.Domain.Entities;
 public class Project : Entity
 {
     private Project() { }
-    public static Project Create(string name, string? description, int ownerId)
+    public static Project Create(string name, string? description, Guid ownerId)
     {
         var project = new Project()
         {
+            Id = Guid.NewGuid(),
             Name = name,
             Description = description,
             OwnerId = ownerId,
@@ -19,10 +20,10 @@ public class Project : Entity
         project.AddDomainEvent(new ProjectCreatedEvent(project));
         return project;
     }
-    public int Id { get; private set; }
+    public Guid Id { get; private set; }
     public string Name { get; private set; } = null!;
     public string? Description { get; private set; }
-    public int OwnerId { get; private set; }
+    public Guid OwnerId { get; private set; }
     public User Owner { get; private set; } = null!;
 
     public ICollection<TodoItem> TodoItems { get; private set; } = [];

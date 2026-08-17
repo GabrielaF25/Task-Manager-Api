@@ -7,8 +7,8 @@ namespace TaskManager.Application.Abstractions.Persistence;
 public interface IProjectRepository
 {
     Task<Project> AddAsync(Project project, CancellationToken ct);
-    Task<Project?> GetProjectByIdAsync(int id, CancellationToken ct);
-    Task<Project?> GetProjectDetailsByIdAsync(int id, CancellationToken ct);
-    Task<PaginationResult<Project>> GetProjectsAsync(QueryParamProject queryParam,int id, PaginationParam pagination,CancellationToken ct);
+    Task<Project?> GetProjectByIdAsync(Guid id, CancellationToken ct);
+    Task<Project?> GetProjectDetailsByIdAsync(Guid id, CancellationToken ct);
+    Task<PaginationResult<Project>> GetProjectsAsync(QueryParamProject queryParam, Guid id, PaginationParam pagination,CancellationToken ct);
     void Remove(Project project);
 }

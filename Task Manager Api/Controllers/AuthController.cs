@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskManager.Application.Features.Authentication.Dtos;
 using TaskManager.Application.Features.Authentication.Login;
@@ -31,7 +32,7 @@ public class AuthController : BaseController
     }
 
     [HttpGet("{id}", Name = "GetUserById")]
-    public async Task<ActionResult<UserResponse>> CreateUser(int id, CancellationToken cancellationToken)
+    public async Task<ActionResult<UserResponse>> CreateUser(Guid id, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new GetUserByIdQuery(id), cancellationToken);
 

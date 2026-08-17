@@ -22,7 +22,7 @@ public class CreateTodoCommandValidationTests
         {
             Title = string.Empty,
             Description = "Description",
-            ProjectId = 1
+            ProjectId = Guid.NewGuid(),
         });
 
         // Act
@@ -41,7 +41,7 @@ public class CreateTodoCommandValidationTests
         {
             Title = new string('A', 101),
             Description = "Description",
-            ProjectId = 1
+            ProjectId = Guid.NewGuid()
         });
 
         // Act
@@ -60,7 +60,7 @@ public class CreateTodoCommandValidationTests
         {
             Title = "Learn NUnit",
             Description = "Write unit tests",
-            ProjectId = 1
+            ProjectId = Guid.NewGuid()
         });
 
         // Act

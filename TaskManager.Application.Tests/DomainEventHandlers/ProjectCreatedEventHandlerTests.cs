@@ -27,7 +27,7 @@ public class ProjectCreatedEventHandlerTests
         var project = Project.Create(
             "Task Manager",
             "Clean Architecture project",
-            1);
+            Guid.NewGuid());
 
         var domainEvent = new ProjectCreatedEvent(project);
 

@@ -100,8 +100,8 @@ public class GetTodosQueryHandlerTests
 
         var todos = new List<TodoItem>
         {
-            TodoItem.Create("Learn NUnit", "Write tests", 1),
-            TodoItem.Create("Learn Moq", "Mock dependencies", 1)
+            TodoItem.Create("Learn NUnit", "Write tests", Guid.NewGuid()),
+            TodoItem.Create("Learn Moq", "Mock dependencies", Guid.NewGuid())
         };
 
         var todoResponses = new List<TodoResponse>

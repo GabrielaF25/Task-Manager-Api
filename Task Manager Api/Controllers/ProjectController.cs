@@ -30,7 +30,7 @@ public class ProjectController : BaseController
     }
 
     [HttpGet("{id}", Name = "GetProjectById")]
-    public async Task<ActionResult<ProjectDto>> GetProjectByIdDetailedAsync(int id, CancellationToken ct)
+    public async Task<ActionResult<ProjectDto>> GetProjectByIdDetailedAsync(Guid id, CancellationToken ct)
     {
         var project = await _mediator.Send(new GetProjectDetailsQuery(id), ct);
 
@@ -47,7 +47,7 @@ public class ProjectController : BaseController
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteAsync(int id, CancellationToken ct)
+    public async Task<ActionResult> DeleteAsync(Guid id, CancellationToken ct)
     {
         var result = await _mediator.Send(new DeleteProjectCommand(id), ct);
 

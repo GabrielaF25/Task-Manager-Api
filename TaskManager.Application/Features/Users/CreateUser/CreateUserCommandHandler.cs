@@ -28,9 +28,9 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Resul
     {
         var normalizedEmail = userToCreate.UserToCreate.Email.Trim().ToLowerInvariant();
 
-       var normalizedUser = new CreateUserRequest() { UserName = userToCreate.UserToCreate.UserName, Email = normalizedEmail, Password = userToCreate.UserToCreate.Password };
+       var normalizedUser = new CreateUserRequest() { UserName = userToCreate.UserToCreate.UserName, Email = normalizedEmail, Password = userToCreate.UserToCreate.Password, Role = userToCreate.UserToCreate.Role};
 
-        var user = User.Register(normalizedUser.Email, normalizedUser.UserName);
+        var user = User.Register(normalizedUser.Email, normalizedUser.UserName, normalizedUser.Role);
 
         var hash = _passwordHasherService.HashPassword(user, userToCreate.UserToCreate.Password);
 

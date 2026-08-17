@@ -19,13 +19,12 @@ public class Get_ProjectByIdTests : IntegrationTestBase
     {
         // Arrange
 
-        TestUserContext.Role = UserRole.User; // change the role for authenticate
-
         var registerRequest = new CreateUserRequest
         {
             UserName = "Gabriela",
             Email = "gabriela@test.com",
-            Password = "Password123"
+            Password = "Password123",
+            Role = UserRole.User
         };
 
         var registerResponse = await Client.PostAsJsonAsync(
@@ -43,6 +42,9 @@ public class Get_ProjectByIdTests : IntegrationTestBase
             .ReadFromJsonAsync<UserResponse>(jsonOptions);
 
         Assert.That(registeredUser, Is.Not.Null);
+
+        TestUserContext.Role = registeredUser.UserRole;
+        TestUserContext.UserId = registeredUser.Id;
 
         var project1 = new CreateProjectRequest()
         {
@@ -63,9 +65,13 @@ public class Get_ProjectByIdTests : IntegrationTestBase
 
         Assert.That(responseRequest2.StatusCode, Is.EqualTo(HttpStatusCode.Created));
 
+        var content = await responseRequest1.Content.ReadFromJsonAsync<ProjectDto>(jsonOptions);
+
+        Assert.That(content, Is.Not.Null);
+
         // Act 
 
-        var response = await Client.GetAsync($"/api/projects/{1}");
+        var response = await Client.GetAsync($"/api/projects/{content.Id}");
 
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
 
@@ -92,7 +98,8 @@ public class Get_ProjectByIdTests : IntegrationTestBase
         {
             UserName = "Gabriela",
             Email = "gabriela@test.com",
-            Password = "Password123"
+            Password = "Password123",
+            Role = UserRole.User
         };
 
         var registerResponse = await Client.PostAsJsonAsync(
@@ -111,9 +118,12 @@ public class Get_ProjectByIdTests : IntegrationTestBase
 
         Assert.That(registeredUser, Is.Not.Null);
 
+        TestUserContext.Role = registeredUser.UserRole;
+        TestUserContext.UserId = registeredUser.Id;
+
         // Act 
 
-        var response = await Client.GetAsync($"/api/projects/{1}");
+        var response = await Client.GetAsync($"/api/projects/{Guid.NewGuid()}");
 
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
 

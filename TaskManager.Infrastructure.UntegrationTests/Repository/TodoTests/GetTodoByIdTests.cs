@@ -1,4 +1,5 @@
 ﻿using TaskManager.Domain.Entities;
+using TaskManager.Domain.Enums;
 using TaskManager.Infrastructure.IntegrationTests.Common;
 
 namespace TaskManager.Infrastructure.IntegrationTests.Repository.TodoTests;
@@ -16,7 +17,7 @@ public class GetTodoByIdTests : TodoBaseTests
         await _dbContext.AddAsync(user);
         await _dbContext.SaveChangesAsync();
 
-        var project = Project.Create("Test Todo", "Descriptio  Test", user.Id);
+        var project = Project.Create("Test Todo", "Description  Test", user.Id);
 
         await _dbContext.Projects.AddAsync(project);
         await _dbContext.SaveChangesAsync();
@@ -28,12 +29,12 @@ public class GetTodoByIdTests : TodoBaseTests
 
         // Act
 
-        var returnedTodo = await _todoRepository.GetByIdAsync(project.Id, CancellationToken.None);
+        var returnedTodo = await _todoRepository.GetByIdAsync(todo.Id, CancellationToken.None);
 
         // Assert
 
         Assert.That(returnedTodo, Is.Not.Null);
-        Assert.That(returnedTodo.Id, Is.EqualTo(project.Id));
+        Assert.That(returnedTodo.Id, Is.EqualTo(todo.Id));
     }
 
     [Test]
@@ -47,7 +48,7 @@ public class GetTodoByIdTests : TodoBaseTests
         await _dbContext.AddAsync(user);
         await _dbContext.SaveChangesAsync();
 
-        var project = Project.Create("Test Todo", "Descriptio  Test", user.Id);
+        var project = Project.Create("Test Todo", "Description  Test", user.Id);
         await _dbContext.Projects.AddAsync(project);
         await _dbContext.SaveChangesAsync();
 

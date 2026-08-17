@@ -16,7 +16,7 @@ public class TodoRepository : ITodoRepository
     {
         _context = managerDb;
     }
-    public async Task<TodoItem?> GetByIdAsync(int id, CancellationToken ct)
+    public async Task<TodoItem?> GetByIdAsync(Guid id, CancellationToken ct)
     {
         var itemTodo = await _context.TodoItems.FirstOrDefaultAsync(t => t.Id == id, ct);
         return itemTodo;

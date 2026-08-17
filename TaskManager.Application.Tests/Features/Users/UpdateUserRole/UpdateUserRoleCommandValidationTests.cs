@@ -22,7 +22,7 @@ public class UpdateUserRoleCommandValidationTests
         // Arrange
         var request = new UpdateUserRequest
         {
-            Id = 1,
+            Id = Guid.NewGuid(),
             Role = UserRole.Admin
         };
 
@@ -39,7 +39,7 @@ public class UpdateUserRoleCommandValidationTests
         // Arrange
         var request = new UpdateUserRequest
         {
-            Id = 1,
+            Id = Guid.NewGuid(),
             Role = (UserRole)999
         };
 

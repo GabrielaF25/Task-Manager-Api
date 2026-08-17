@@ -21,7 +21,7 @@ public class TestDataSeeder
 
     public static async Task<List<Project>> SeedProjectsAsync(
         TaskManagerDbContext dbContext,
-        int ownerId,
+        Guid ownerId,
         int count = 10)
     {
         var projects = new List<Project>();
@@ -44,7 +44,7 @@ public class TestDataSeeder
 
     public static async Task<List<TodoItem>> SeedTodosAsync(
         TaskManagerDbContext dbContext,
-        int projectId,
+        Guid projectId,
         int count = 10)
     {
         var todos = new List<TodoItem>();

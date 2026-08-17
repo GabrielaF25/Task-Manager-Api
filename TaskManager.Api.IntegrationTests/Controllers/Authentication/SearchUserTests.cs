@@ -34,7 +34,7 @@ public class SearchUserTests : IntegrationTestBase
         Assert.That(registeredUser, Is.Not.Null);
         // Act
 
-        var responseRequest = await Client.GetAsync($"/api/auth/{1}");
+        var responseRequest = await Client.GetAsync($"/api/auth/{registeredUser.Id}");
 
         Assert.That(responseRequest.StatusCode, Is.EqualTo(HttpStatusCode.OK));
 
@@ -45,7 +45,7 @@ public class SearchUserTests : IntegrationTestBase
 
         Assert.Multiple(() =>
         {
-            Assert.That(contentResponse.Id, Is.EqualTo(1));
+            Assert.That(contentResponse.Id, Is.EqualTo(registeredUser.Id));
             Assert.That(contentResponse.UserName, Is.EqualTo(registeredUser.UserName));
             Assert.That(contentResponse.UserRole, Is.EqualTo(registeredUser.UserRole));
         });
@@ -59,7 +59,7 @@ public class SearchUserTests : IntegrationTestBase
         
         // Act
 
-        var responseRequest = await Client.GetAsync($"/api/auth/{1}");
+        var responseRequest = await Client.GetAsync($"/api/auth/{Guid.NewGuid()}");
 
         Assert.That(responseRequest.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
 

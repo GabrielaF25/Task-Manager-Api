@@ -24,7 +24,8 @@ public class GetProjectsTests : IntegrationTestBase
         {
             UserName = "Gabriela",
             Email = "gabriela@test.com",
-            Password = "Password123"
+            Password = "Password123",
+            Role = UserRole.User
         };
 
         var registerResponse = await Client.PostAsJsonAsync(
@@ -42,6 +43,9 @@ public class GetProjectsTests : IntegrationTestBase
             .ReadFromJsonAsync<UserResponse>(jsonOptions);
 
         Assert.That(registeredUser, Is.Not.Null);
+
+        TestUserContext.UserId = registeredUser.Id;
+        TestUserContext.Role = registeredUser.UserRole;
 
         var project1 = new CreateProjectRequest()
         {

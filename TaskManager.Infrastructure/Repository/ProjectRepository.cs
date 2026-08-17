@@ -22,7 +22,7 @@ public class ProjectRepository : IProjectRepository
         return project;
     }
 
-    public async Task<PaginationResult<Project>> GetProjectsAsync(QueryParamProject queryParam, int ownerId,PaginationParam pagination,CancellationToken ct)
+    public async Task<PaginationResult<Project>> GetProjectsAsync(QueryParamProject queryParam, Guid ownerId,PaginationParam pagination,CancellationToken ct)
     {
         var query =  _dbContext.Projects
             .Where(p => p.OwnerId == ownerId)
@@ -39,7 +39,7 @@ public class ProjectRepository : IProjectRepository
         return paginatedList;
     }
 
-    public async Task<Project?> GetProjectDetailsByIdAsync(int id, CancellationToken ct)
+    public async Task<Project?> GetProjectDetailsByIdAsync(Guid id, CancellationToken ct)
     {
         return await _dbContext.Projects
             .AsNoTracking()
@@ -47,7 +47,7 @@ public class ProjectRepository : IProjectRepository
             .FirstOrDefaultAsync( p => p.Id == id, ct);
     }
 
-    public async Task<Project?> GetProjectByIdAsync(int id, CancellationToken ct)
+    public async Task<Project?> GetProjectByIdAsync(Guid id, CancellationToken ct)
     {
         return await _dbContext.Projects
             .FirstOrDefaultAsync(p => p.Id == id, ct);

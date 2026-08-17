@@ -32,7 +32,7 @@ public class TodoController : BaseController
     }
 
     [HttpGet("{id}", Name = "GetById")]
-    public async Task<ActionResult<TodoResponse>> GetItemAsync(int id, CancellationToken ct)
+    public async Task<ActionResult<TodoResponse>> GetItemAsync(Guid id, CancellationToken ct)
     {
         var item = await _mediator.Send(new GetTodoQuery(id), ct);
 
@@ -48,7 +48,7 @@ public class TodoController : BaseController
     }
 
     [HttpPatch("{id}/complete")]
-    public async Task<ActionResult<TodoResponse>> UpdateItemStatusAsync(int id, CancellationToken ct)
+    public async Task<ActionResult<TodoResponse>> UpdateItemStatusAsync(Guid id, CancellationToken ct)
     {
         var response = await _mediator.Send(new UpdateTodoCommand(id), ct);
 
@@ -56,7 +56,7 @@ public class TodoController : BaseController
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteItemAsync(int id, CancellationToken ct)
+    public async Task<ActionResult> DeleteItemAsync(Guid id, CancellationToken ct)
     {
         var response = await _mediator.Send(new DeleteTodoCommand(id), ct);
         return HandleResult(response);

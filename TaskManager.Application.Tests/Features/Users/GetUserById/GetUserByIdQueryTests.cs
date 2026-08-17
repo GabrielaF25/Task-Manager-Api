@@ -31,7 +31,7 @@ public class GetUserByIdQueryHandlerTests
     public async Task Handle_Should_Return_NotFound_When_User_Does_Not_Exist()
     {
         // Arrange
-        var query = new GetUserByIdQuery(1);
+        var query = new GetUserByIdQuery(Guid.NewGuid());
 
         _userRepositoryMock
             .Setup(x => x.GetUserByIdAsync(query.Id, It.IsAny<CancellationToken>()))

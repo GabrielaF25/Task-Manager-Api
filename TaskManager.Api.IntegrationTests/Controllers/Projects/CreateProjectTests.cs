@@ -18,15 +18,14 @@ public class CreateProjectTests : IntegrationTestBase
     [Test]
     public async Task Should_Create_Project()
     {
-        // Arrange
-
-        TestUserContext.Role = UserRole.User; // change the role for authenticate
+        // Arrange// change the role for authenticate
 
         var registerRequest = new CreateUserRequest
         {
             UserName = "Gabriela",
             Email = "gabriela@test.com",
-            Password = "Password123"
+            Password = "Password123",
+            Role = UserRole.User
         };
 
         var registerResponse = await Client.PostAsJsonAsync(
@@ -44,6 +43,9 @@ public class CreateProjectTests : IntegrationTestBase
             .ReadFromJsonAsync<UserResponse>(jsonOptions);
 
         Assert.That(registeredUser, Is.Not.Null);
+
+        TestUserContext.Role = registeredUser.UserRole;
+        TestUserContext.UserId = registeredUser.Id;
 
         var project = new CreateProjectRequest()
         {

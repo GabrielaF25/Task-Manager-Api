@@ -13,12 +13,12 @@ public class CurrentUserService : ICurrentUserService
         _httpContext = httpContext;
     }
 
-    public int GetCurrentUserId()
+    public Guid GetCurrentUserId()
     {
         var userId = _httpContext.HttpContext?
             .User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        if(!int.TryParse(userId, out int id))
+        if(!Guid.TryParse(userId, out Guid id))
         {
             throw new UnauthorizedAccessException();
         }

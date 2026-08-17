@@ -2,13 +2,13 @@
 
 public class RefreshToken
 {
-    public int Id { get; private set; }
+    public Guid Id { get; private set; }
     public string Token { get; private set; } = string.Empty;
     public DateTimeOffset ExpiresAt { get; private set; }
     public DateTimeOffset CreatedAt { get; private set; }
     public DateTimeOffset? RevokedAt { get; private set; }
 
-    public int UserId { get; private set; }
+    public Guid UserId { get; private set; }
     public User User { get; private set; } = null!;
 
     public bool IsExpired => DateTimeOffset.UtcNow > ExpiresAt;
@@ -20,6 +20,7 @@ public class RefreshToken
     {
         return new RefreshToken
         {
+            Id = Guid.NewGuid(),
             Token = token,
             ExpiresAt = expiresAt,
             CreatedAt = DateTimeOffset.UtcNow

@@ -36,7 +36,7 @@ public class GetProjectDetailsQueryHandlerTests
     public async Task Handle_Should_Return_NotFound_When_Project_Does_Not_Exist()
     {
         // Arrange
-        var query = new GetProjectDetailsQuery(1);
+        var query = new GetProjectDetailsQuery(Guid.NewGuid());
 
         _projectRepositoryMock
             .Setup(x => x.GetProjectDetailsByIdAsync(query.Id, It.IsAny<CancellationToken>()))
@@ -59,12 +59,12 @@ public class GetProjectDetailsQueryHandlerTests
     public async Task Handle_Should_Return_Forbidden_When_Current_User_Is_Not_Project_Owner()
     {
         // Arrange
-        var query = new GetProjectDetailsQuery(1);
+        var query = new GetProjectDetailsQuery(Guid.NewGuid());
 
         var project = Project.Create(
             name: "Task Manager",
             description: "Test project",
-            ownerId: 10);
+            ownerId: Guid.NewGuid());
 
         _projectRepositoryMock
             .Setup(x => x.GetProjectDetailsByIdAsync(query.Id, It.IsAny<CancellationToken>()))
@@ -72,7 +72,7 @@ public class GetProjectDetailsQueryHandlerTests
 
         _currentUserServiceMock
             .Setup(x => x.GetCurrentUserId())
-            .Returns(5);
+            .Returns(Guid.NewGuid());
 
         // Act
         var result = await _handler.Handle(query, CancellationToken.None);
@@ -91,12 +91,12 @@ public class GetProjectDetailsQueryHandlerTests
     public async Task Handle_Should_Return_ProjectDto_When_Current_User_Is_Project_Owner()
     {
         // Arrange
-        var query = new GetProjectDetailsQuery(1);
+        var query = new GetProjectDetailsQuery(Guid.NewGuid());
 
         var project = Project.Create(
             name: "Task Manager",
             description: "Test project",
-            ownerId: 10);
+            ownerId: Guid.NewGuid());
 
         var projectDto = new ProjectDto
         {
@@ -110,7 +110,7 @@ public class GetProjectDetailsQueryHandlerTests
 
         _currentUserServiceMock
             .Setup(x => x.GetCurrentUserId())
-            .Returns(10);
+            .Returns(project.OwnerId);
 
         _mapperMock
             .Setup(x => x.Map<ProjectDto>(project))

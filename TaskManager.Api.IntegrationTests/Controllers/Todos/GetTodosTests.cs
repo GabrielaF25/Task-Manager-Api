@@ -21,32 +21,35 @@ public class GetTodosTests : IntegrationTestBase
 
         // Arrange
 
-        TestUserContext.Role = UserRole.User; // change the role for authenticate
+        // Arrange
 
-        // register user
-
-        var registerRequest = new CreateUserRequest
+        var userAdmin = new CreateUserRequest
         {
             UserName = "Gabriela",
             Email = "gabriela@test.com",
-            Password = "Password123"
+            Password = "Password123",
+            Role = UserRole.User
         };
 
-        var registerResponse = await Client.PostAsJsonAsync(
+        var registerRequestUserAdmin = await Client.PostAsJsonAsync(
             "/api/auth/register",
-            registerRequest);
+            userAdmin);
 
         Assert.That(
-            registerResponse.StatusCode,
+            registerRequestUserAdmin.StatusCode,
             Is.EqualTo(HttpStatusCode.Created));
+
 
         var jsonOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web);
         jsonOptions.Converters.Add(new JsonStringEnumConverter());
 
-        var registeredUser = await registerResponse.Content
+        var content = await registerRequestUserAdmin.Content
             .ReadFromJsonAsync<UserResponse>(jsonOptions);
 
-        Assert.That(registeredUser, Is.Not.Null);
+        Assert.That(content, Is.Not.Null);
+
+        TestUserContext.Role = content.UserRole;
+        TestUserContext.UserId = content.Id;
 
         // create project
 
@@ -57,21 +60,47 @@ public class GetTodosTests : IntegrationTestBase
         };
 
         var responseRequest = await Client.PostAsJsonAsync("api/projects", project);
+        var contentProject = await responseRequest.Content.ReadFromJsonAsync<ProjectDto>();
+
+        Assert.That(contentProject, Is.Not.Null);
 
         Assert.That(responseRequest.StatusCode, Is.EqualTo(HttpStatusCode.Created));
-        TestUserContext.Role = UserRole.Admin; // change the role for authenticate
+
+        var user = new CreateUserRequest
+        {
+            UserName = "GabrielaTest",
+            Email = "gabriela@testuser.com",
+            Password = "Password123",
+            Role = UserRole.Admin
+        };
+
+        var registerRequestUser = await Client.PostAsJsonAsync(
+            "/api/auth/register",
+            user);
+
+        Assert.That(
+            registerRequestUser.StatusCode,
+            Is.EqualTo(HttpStatusCode.Created));
+
+        var contentUser = await registerRequestUser.Content
+            .ReadFromJsonAsync<UserResponse>(jsonOptions);
+
+        Assert.That(contentUser, Is.Not.Null);
+
+        TestUserContext.Role = contentUser.UserRole;
+        TestUserContext.UserId = contentUser.Id;
 
         var createRequest1 = new CreateTodoRequest()
         {
             Title = "Test Todo1",
             Description = "Test Description1",
-            ProjectId = 1
+            ProjectId = contentProject.Id
         };
         var createRequest2 = new CreateTodoRequest()
         {
             Title = "Test Todo2",
             Description = "Test Description2",
-            ProjectId = 1
+            ProjectId = contentProject.Id
         };
 
         var response1 = await Client.PostAsJsonAsync("/api/todos", createRequest1);

@@ -20,7 +20,7 @@ public class UserRepository : IUserRepository
         return user;
     }
 
-    public async Task<User?> GetUserByIdAsync(int id, CancellationToken cancellationToken)
+    public async Task<User?> GetUserByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         return await _context.Users.FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
     }

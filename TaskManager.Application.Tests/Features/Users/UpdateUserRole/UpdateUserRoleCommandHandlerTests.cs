@@ -2,6 +2,7 @@
 using Moq;
 using NUnit.Framework;
 using TaskManager.Application.Abstractions.Persistence;
+using TaskManager.Application.Abstractions.Services;
 using TaskManager.Application.Common.ResultPattern;
 using TaskManager.Application.Features.Users.Dtos;
 using TaskManager.Application.Features.Users.UpdateUserRole;
@@ -15,16 +16,19 @@ public class UpdateUserRoleCommandHandlerTests
 {
     private Mock<IUserRepository> _userRepositoryMock = null!;
     private Mock<IMapper> _mapperMock = null!;
+    private Mock<ICurrentUserService> _currentUserServiceMock = null!;
     private UpdateUserRoleCommandHandler _handler = null!;
 
     [SetUp]
     public void SetUp()
     {
         _userRepositoryMock = new Mock<IUserRepository>();
+        _currentUserServiceMock = new Mock<ICurrentUserService>();
         _mapperMock = new Mock<IMapper>();
 
         _handler = new UpdateUserRoleCommandHandler(
             _userRepositoryMock.Object,
+            _currentUserServiceMock.Object,
             _mapperMock.Object);
     }
 
@@ -33,15 +37,25 @@ public class UpdateUserRoleCommandHandlerTests
     {
         var request = new UpdateUserRequest
         {
-            Id = 1,
+            Id = Guid.NewGuid(),
             Role = UserRole.Admin
         };
+        var user = User.Register("user@user.ro", "UserName", UserRole.Admin);
 
         var command = new UpdateUserRoleCommand(request);
 
+        var userId = Guid.NewGuid();
+        _currentUserServiceMock
+            .Setup(x => x.GetCurrentUserId())
+            .Returns(userId);
+
         _userRepositoryMock
-            .Setup(x => x.GetUserByIdAsync(request.Id, It.IsAny<CancellationToken>()))
-            .ReturnsAsync((User?)null);
+            .Setup(x => x.GetUserByIdAsync(userId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(user);
+
+        _userRepositoryMock
+           .Setup(x => x.GetUserByIdAsync(request.Id, It.IsAny<CancellationToken>()))
+           .ReturnsAsync((User?)null);
 
         var result = await _handler.Handle(command, CancellationToken.None);
 
@@ -57,23 +71,31 @@ public class UpdateUserRoleCommandHandlerTests
     [Test]
     public async Task Handle_Should_Update_User_Role_And_Return_Success()
     {
-        var user = User.Register("gabriel@test.com", "Gabriel");
         var request = new UpdateUserRequest
         {
-            Id = user.Id,
+            Id = Guid.NewGuid(),
             Role = UserRole.Admin
         };
+        var user = User.Register("user@user.ro", "UserName", UserRole.Admin);
 
+        var userId = Guid.NewGuid();
         var command = new UpdateUserRoleCommand(request);
 
         var response = new UserResponse
         {
-            Id = user.Id,
+            Id = request.Id,
             UserName = user.UserName,
             Email = user.Email,
             UserRole = UserRole.Admin
         };
 
+        _currentUserServiceMock
+           .Setup(x => x.GetCurrentUserId())
+           .Returns(userId);
+
+        _userRepositoryMock
+            .Setup(x => x.GetUserByIdAsync(userId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(user);
         _userRepositoryMock
             .Setup(x => x.GetUserByIdAsync(request.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(user);

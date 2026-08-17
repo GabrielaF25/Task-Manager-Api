@@ -40,9 +40,10 @@ public class CreateProjectCommandHandlerTests
             Description = "Test project"
         });
 
+        var id = Guid.NewGuid();
         _currentUserServiceMock
             .Setup(x => x.GetCurrentUserId())
-            .Returns(10);
+            .Returns(id);
 
         _projectRepositoryMock
             .Setup(x => x.AddAsync(It.IsAny<Project>(), It.IsAny<CancellationToken>()))
@@ -67,7 +68,7 @@ public class CreateProjectCommandHandlerTests
                 It.Is<Project>(p =>
                     p.Name == "Task Manager" &&
                     p.Description == "Test project" &&
-                    p.OwnerId == 10),
+                    p.OwnerId == id),
                 It.IsAny<CancellationToken>()),
             Times.Once);
     }
@@ -82,17 +83,17 @@ public class CreateProjectCommandHandlerTests
             Description = "Test project"
         });
 
-        var project = Project.Create("Task Manager", "Test project", 10);
+        var project = Project.Create("Task Manager", "Test project", Guid.NewGuid());
 
         var projectDto = new ProjectDto
         {
             Name = "Task Manager",
             Description = "Test project"
         };
-
+        var id = Guid.NewGuid();
         _currentUserServiceMock
             .Setup(x => x.GetCurrentUserId())
-            .Returns(10);
+            .Returns(id);
 
         _projectRepositoryMock
             .Setup(x => x.AddAsync(It.IsAny<Project>(), It.IsAny<CancellationToken>()))

@@ -34,7 +34,7 @@ public class CreateTodoCommandHandlerTests
         {
             Title = "Learn tests",
             Description = "Write NUnit tests",
-            ProjectId = 1
+            ProjectId = Guid.NewGuid()
         });
 
         _todoRepositoryMock
@@ -60,7 +60,7 @@ public class CreateTodoCommandHandlerTests
                 It.Is<TodoItem>(t =>
                     t.Title == "Learn tests" &&
                     t.Description == "Write NUnit tests" &&
-                    t.ProjectId == 1),
+                    t.ProjectId == command.TodoRequest.ProjectId),
                 It.IsAny<CancellationToken>()),
             Times.Once);
     }
@@ -73,10 +73,10 @@ public class CreateTodoCommandHandlerTests
         {
             Title = "Learn tests",
             Description = "Write NUnit tests",
-            ProjectId = 1
+            ProjectId = Guid.NewGuid()
         });
 
-        var todo = TodoItem.Create("Learn tests", "Write NUnit tests", 1);
+        var todo = TodoItem.Create("Learn tests", "Write NUnit tests", Guid.NewGuid());
 
         var todoResponse = new TodoResponse
         {
